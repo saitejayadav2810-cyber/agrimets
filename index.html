@@ -126,7 +126,7 @@
     .hero-title .dim { color: var(--text-3); }
 
     .hero-sub {
-      font-family: var(--font-serif);
+      font-family: var(--font-body);
       font-size: 17px;
       color: var(--text-2);
       line-height: 1.65;
@@ -193,6 +193,51 @@
       font-size: 11px; font-weight: 700; letter-spacing: 0.13em;
       text-transform: uppercase; color: var(--text-3);
       margin-bottom: 16px;
+    }
+    .sunday-highlight-banner {
+      margin: 4px 0 16px;
+      border: 1px solid rgba(255,190,0,0.26);
+      background: linear-gradient(135deg, rgba(255,190,0,0.16), rgba(24,255,255,0.10));
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sunday-highlight-banner.live {
+      box-shadow: 0 0 0 1px rgba(255,190,0,0.25), 0 0 26px rgba(255,190,0,0.22);
+      animation: sundayPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes sundayPulse {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-1px); }
+    }
+    .sunday-meta { min-width: 0; }
+    .sunday-title {
+      font-family: var(--font-title);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--amber);
+      margin-bottom: 3px;
+    }
+    .sunday-sub {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.45;
+    }
+    .sunday-cta {
+      flex-shrink: 0;
+      border: 1px solid rgba(255,190,0,0.4);
+      background: rgba(255,190,0,0.14);
+      color: #ffd66b;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      font-family: var(--font-title);
     }
     .section-gap { margin-top: 52px; animation: fadeUp 0.7s 0.15s ease both; }
 
@@ -356,6 +401,10 @@
       .cta-row { flex-direction: column; }
       .btn-primary, .btn-secondary { justify-content: center; }
       .hero { padding: 36px 0 32px; }
+      .page { padding: 0 14px 64px; }
+      .cat-card { padding: 20px 18px; }
+      .sunday-highlight-banner { padding: 12px; align-items: flex-start; }
+      .sunday-cta { margin-top: 1px; }
     }
     /* ── DESKTOP RESPONSIVENESS ──────────────────────────── */
     @media (min-width: 768px) {
@@ -432,11 +481,18 @@
     <div class="ad-slot" id="ad-top"></div>
     
     <div class="section-label" style="margin-top: 16px;">Choose a category</div>
+    <div class="sunday-highlight-banner" id="sunday-highlight">
+      <div class="sunday-meta">
+        <div class="sunday-title">🏆 Sunday Mock Spotlight</div>
+        <div class="sunday-sub" id="sunday-highlight-sub">Every Sunday at 11:00 AM — 100 mixed questions with full analysis.</div>
+      </div>
+      <a href="mock.html" class="sunday-cta" id="sunday-highlight-cta">Open Mock Arena</a>
+    </div>
 
     <div class="cat-grid">
 
       <!-- Test Series -->
-      <a href="mock.html?cat=test-series" class="cat-card cyan" id="card-test-series">
+      <a href="mock.html?cat=test-series" class="cat-card cyan" id="card-test-series" data-cat-norm="test series">
         <div class="cat-top">
           <div class="cat-icon cyan">📋</div>
           <div class="cat-arrow">↗</div>
@@ -444,14 +500,14 @@
         <div class="cat-name">Test Series</div>
         <div class="cat-desc">Sequential mock tests releasing daily at 8 AM. Practice with subject-mix questions across horticulture, agronomy, soil science, and more.</div>
         <div class="cat-meta">
-          <span class="meta-chip chip-cyan">26 tests</span>
-          <span class="meta-chip chip-cyan">1,372 questions</span>
+          <span class="meta-chip chip-cyan" id="meta-test-series-tests">— tests</span>
+          <span class="meta-chip chip-cyan" id="meta-test-series-qs">— questions</span>
           <span class="meta-chip chip-gray">Daily unlock · 8 AM</span>
         </div>
       </a>
 
       <!-- AFO Mains PYQ -->
-      <a href="mock.html?cat=afo-mains" class="cat-card amber" id="card-afo-mains">
+      <a href="mock.html?cat=afo-mains" class="cat-card amber" id="card-afo-mains" data-cat-norm="afo mains pyq">
         <div class="cat-top">
           <div class="cat-icon amber">🏛</div>
           <div class="cat-arrow">↗</div>
@@ -459,8 +515,8 @@
         <div class="cat-name">AFO Mains PYQ</div>
         <div class="cat-desc">Previous year question papers from 2018–2025 for the Agriculture Field Officer Mains exam. Full papers, year-wise, with negative marking.</div>
         <div class="cat-meta">
-          <span class="meta-chip chip-amber">10 papers</span>
-          <span class="meta-chip chip-amber">600 questions</span>
+          <span class="meta-chip chip-amber" id="meta-afo-tests">— papers</span>
+          <span class="meta-chip chip-amber" id="meta-afo-qs">— questions</span>
           <span class="meta-chip chip-gray">2018 – 2025</span>
         </div>
       </a>
@@ -549,6 +605,73 @@
       localStorage.removeItem(LS_KEY);
       location.reload();
     });
+  })();
+
+  // ── Keep only categories present in mock-tests.json ──
+  (function () {
+    const cards = [...document.querySelectorAll('.cat-card[data-cat-norm]')];
+    if (!cards.length) return;
+
+    fetch('./mock-tests.json', { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : [])
+      .then(rows => {
+        if (!Array.isArray(rows) || rows.length === 0) return;
+
+        const groups = new Map();
+        rows.forEach(r => {
+          const norm = String(r.category || '').trim().toLowerCase();
+          const testNo = String(r.test_no || '1').trim();
+          if (!norm) return;
+          if (!groups.has(norm)) groups.set(norm, { q: 0, t: new Set() });
+          const g = groups.get(norm);
+          g.q += 1;
+          g.t.add(testNo);
+        });
+
+        cards.forEach(card => {
+          const norm = (card.dataset.catNorm || '').trim().toLowerCase();
+          const data = groups.get(norm);
+          if (!data) card.remove();
+        });
+
+        const ts = groups.get('test series');
+        if (ts) {
+          const tEl = document.getElementById('meta-test-series-tests');
+          const qEl = document.getElementById('meta-test-series-qs');
+          if (tEl) tEl.textContent = `${ts.t.size} tests`;
+          if (qEl) qEl.textContent = `${ts.q.toLocaleString('en-IN')} questions`;
+        }
+
+        const afo = groups.get('afo mains pyq');
+        if (afo) {
+          const tEl = document.getElementById('meta-afo-tests');
+          const qEl = document.getElementById('meta-afo-qs');
+          if (tEl) tEl.textContent = `${afo.t.size} papers`;
+          if (qEl) qEl.textContent = `${afo.q.toLocaleString('en-IN')} questions`;
+        }
+      })
+      .catch(() => {});
+  })();
+
+  // ── Sunday mock highlight ──
+  (function () {
+    const card = document.getElementById('sunday-highlight');
+    const sub  = document.getElementById('sunday-highlight-sub');
+    const cta  = document.getElementById('sunday-highlight-cta');
+    if (!card || !sub || !cta) return;
+
+    const now = new Date();
+    const isSunday = now.getDay() === 0;
+    const live = isSunday && now.getHours() >= 11;
+    if (live) {
+      card.classList.add('live');
+      sub.textContent = 'LIVE now — Sunday Mock is unlocked. Start now and check complete profile analysis after submission.';
+      cta.textContent = 'Start Sunday Mock';
+    } else if (isSunday) {
+      card.classList.add('live');
+      sub.textContent = 'Sunday special day: mock unlocks at 11:00 AM. Get ready for 100 mixed questions.';
+      cta.textContent = 'Open Mock Arena';
+    }
   })();
 
   function escHtml(s) {

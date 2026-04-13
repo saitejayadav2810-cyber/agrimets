@@ -52,6 +52,8 @@ const MockData = {
   testSubmitted:     false,
   history:           [],
   countdownInterval: null,
+  isPaused:          false,
+  pauseStartedAt:    null,
 };
 
 // ── UTILS ───────────────────────────────────────────────────────
@@ -117,6 +119,48 @@ function fmtCountdown(s) {
   if (h > 0) return `${h}h ${String(m).padStart(2,'0')}m`;
   if (m > 0) return `${m}m ${String(sec).padStart(2,'0')}s`;
   return `${sec}s`;
+}
+
+function fmtMMSS(s) {
+  const safe = Math.max(0, Math.floor(Number(s) || 0));
+  const m = Math.floor(safe / 60).toString().padStart(2, '0');
+  const sec = (safe % 60).toString().padStart(2, '0');
+  return `${m}:${sec}`;
+}
+
+function resetPauseUI() {
+  const overlay = document.getElementById('mock-pause-overlay');
+  const btn = document.getElementById('btn-mock-pause');
+  MockData.isPaused = false;
+  MockData.pauseStartedAt = null;
+  if (overlay) overlay.classList.add('hidden');
+  if (btn) btn.textContent = '⏸ Pause';
+}
+
+function setPause(paused) {
+  if (!MockData.currentTest || MockData.testSubmitted) return;
+  const overlay = document.getElementById('mock-pause-overlay');
+  const btn = document.getElementById('btn-mock-pause');
+
+  if (paused) {
+    if (MockData.isPaused) return;
+    MockData.isPaused = true;
+    MockData.pauseStartedAt = Date.now();
+    clearInterval(MockData.timerInterval);
+    MockData.timerInterval = null;
+    if (overlay) overlay.classList.remove('hidden');
+    if (btn) btn.textContent = '▶ Resume';
+    return;
+  }
+
+  if (!MockData.isPaused) return;
+  resetPauseUI();
+  clearInterval(MockData.timerInterval);
+  MockData.timerInterval = setInterval(timerTick, 1000);
+}
+
+function confirmExitTest() {
+  confirm('⚠️ Exit warning: Your current test progress will be lost.\nDo you want to exit?', () => goHome());
 }
 
 // ── DATA LOADING ────────────────────────────────────────────────
@@ -187,6 +231,7 @@ function goHome() {
   clearInterval(MockData.countdownInterval);
   MockData.timerInterval = null;
   MockData.testSubmitted = true;
+  resetPauseUI();
   document.getElementById('mock-arena').classList.add('hidden');
   document.getElementById('mock-results').classList.add('hidden');
 
@@ -338,6 +383,7 @@ function renderCategories(cats) {
     const sundayCard = document.createElement('div');
     const sunSecsLeft = secsUntilHour(SUNDAY_MEGA_HOUR);
     sundayCard.className = 'mock-sched-card' + (sundayLive ? ' unlocked' : ' locked');
+    if (isSunday) sundayCard.classList.add('sunday-highlight');
     sundayCard.innerHTML = `
       <div class="sched-badge">${sundayLive ? '🏆' : '🔒'}</div>
       <div class="sched-info">
@@ -429,46 +475,10 @@ function openCategoryTests(cat) {
   const listEl  = document.getElementById('test-list');
   if (titleEl) titleEl.textContent = cat.key;
 
-  // Scheduled category: hide today's test (only past tests shown)
-  const schedCfg = MOCK_SCHEDULE.find(c => c.catNorm === cat.norm);
-  let allowedTestNos = null;
-
-  if (schedCfg) {
-    const key     = 'dca_daily_' + cat.norm.replace(/\s+/g,'_');
-    const stored  = ls_get(key, { date: '', testNo: null, used: [] });
-    const usedArr = Array.isArray(stored.used) ? stored.used : [];
-    const pastTests = (stored.date === today() && stored.testNo)
-      ? usedArr.filter(t => t !== stored.testNo)
-      : usedArr;
-    allowedTestNos = new Set(pastTests);
-  }
-
   const rows = MockData.allRows.filter(r => {
     if ((r.category || 'Uncategorised').trim().toLowerCase() !== cat.norm) return false;
-    if (allowedTestNos !== null) return allowedTestNos.has(r.test_no || '1');
     return true;
   });
-
-  // Empty state for scheduled category
-  if (schedCfg && rows.length === 0) {
-    const todayTestNo  = getDailyTestNoReadOnly(cat.norm);
-    const hasTodayTest = todayTestNo !== null && MockData.allRows.some(r =>
-      (r.category || '').trim().toLowerCase() === cat.norm && (r.test_no || '1') === todayTestNo
-    );
-    const h = schedCfg.unlockHour;
-    const timeStr = `${h}:00`;
-    const isLive  = new Date().getHours() >= h;
-    const msg    = hasTodayTest ? (isLive ? `Today's test is LIVE on the main screen!` : `Today's test unlocks at ${timeStr}.`) : `No test scheduled today.`;
-    const subMsg = hasTodayTest ? `It will appear here from tomorrow.` : `Check back tomorrow.`;
-    if (subEl)  subEl.textContent = hasTodayTest ? 'Unlocks today' : 'Coming soon';
-    if (listEl) listEl.innerHTML = `
-      <div class="mock-empty-state">
-        <div class="mock-empty-icon">${hasTodayTest ? '⏳' : '📋'}</div>
-        <div class="mock-empty-title">${escHtml(msg)}</div>
-        <div class="mock-empty-sub">${escHtml(subMsg)}</div>
-      </div>`;
-    return;
-  }
 
   // Build test list
   const groups = {};
@@ -527,6 +537,7 @@ function startMockTest(test) {
   MockData.history          = [];
   MockData.testSubmitted    = false;
   MockData.timerSecondsLeft = MOCK_TIMER_SECS;
+  resetPauseUI();
 
   const n = MockData.questions.length;
   MockData.answers         = new Array(n).fill(null);
@@ -704,6 +715,7 @@ function updateTimerUI() {
 }
 
 function timerTick() {
+  if (MockData.isPaused) return;
   if (MockData.timerSecondsLeft <= 0) {
     clearInterval(MockData.timerInterval);
     showToast('⏱ Time up! Auto-submitting…', 2500);
@@ -727,6 +739,7 @@ function confirmAndSubmit() {
 
 function submitMockTest() {
   clearInterval(MockData.timerInterval);
+  resetPauseUI();
   finishMock();
 }
 
@@ -749,6 +762,13 @@ function finishMock() {
   MockData.history.forEach(h => { if(h.status==='correct')c++; else if(h.status==='wrong')w++; else s++; });
 
   const score = c - (w * 0.25);
+  const total = MockData.questions.length;
+  const attempted = c + w;
+  const accuracy = attempted > 0 ? (c / attempted) * 100 : 0;
+  const scorePct = total > 0 ? (score / total) * 100 : 0;
+  const timeTakenSec = Math.max(0, MOCK_TIMER_SECS - MockData.timerSecondsLeft);
+  const avgTimePerQ = total > 0 ? timeTakenSec / total : 0;
+
   document.getElementById('mock-final-score').textContent = score.toFixed(2);
   document.getElementById('count-correct').textContent    = c;
   document.getElementById('count-wrong').textContent      = w;
@@ -756,7 +776,30 @@ function finishMock() {
   document.getElementById('pts-correct').textContent      = c.toFixed(2);
   document.getElementById('pts-wrong').textContent        = (w * 0.25).toFixed(2);
 
-  saveMockResult(c, w, s, score);
+  const band = scorePct >= 75 ? 'Excellent'
+    : scorePct >= 60 ? 'Strong'
+    : scorePct >= 45 ? 'Average'
+    : 'Needs improvement';
+
+  const setText = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+  setText('analysis-attempted', `${attempted} / ${total}`);
+  setText('analysis-accuracy', `${accuracy.toFixed(1)}%`);
+  setText('analysis-score-pct', `${scorePct.toFixed(1)}%`);
+  setText('analysis-time-taken', fmtMMSS(timeTakenSec));
+  setText('analysis-avg-time', `${Math.round(avgTimePerQ)}s`);
+  setText('analysis-band', band);
+
+  saveMockResult(c, w, s, score, {
+    attempted,
+    accuracy: Number(accuracy.toFixed(2)),
+    scorePct: Number(scorePct.toFixed(2)),
+    timeTakenSec,
+    avgTimePerQ: Number(avgTimePerQ.toFixed(2)),
+    band,
+  });
 
   document.querySelectorAll('.rev-btn').forEach(b => b.classList.remove('active'));
   document.querySelector('.rev-btn[data-filter="all"]')?.classList.add('active');
@@ -765,13 +808,17 @@ function finishMock() {
   renderReview('all');
 }
 
-function saveMockResult(correct, wrong, skipped, score) {
+function saveMockResult(correct, wrong, skipped, score, profile = {}) {
   try {
     let results  = ls_get(LS_MOCK_RESULTS, []);
     const testName = (MockData.currentTest?.name || 'Mock Test').trim();
     const testNo   = MockData.currentTest?.testNo || null;
     const category = (MockData.currentCategory?.name || MockData.currentCategory?.key || '').trim();
-    const entry = { testName, testNo, category, ts: Date.now(), score, total: MockData.questions.length, correct, wrong, skipped };
+    const entry = {
+      testName, testNo, category, ts: Date.now(),
+      score, total: MockData.questions.length, correct, wrong, skipped,
+      ...profile
+    };
     const nameKey = testName.toLowerCase();
     results = results.filter(r => (r.testName || '').trim().toLowerCase() !== nameKey);
     results.unshift(entry);
@@ -877,7 +924,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Arena: exit / prev / next / skip / review / submit
   document.getElementById('btn-mock-exit')?.addEventListener('click', () => {
-    confirm('Quit this test? Your progress will be lost.', () => goHome());
+    confirmExitTest();
+  });
+
+  document.getElementById('btn-mock-pause')?.addEventListener('click', () => {
+    setPause(!MockData.isPaused);
+  });
+
+  document.getElementById('btn-mock-resume')?.addEventListener('click', () => {
+    setPause(false);
+  });
+
+  document.getElementById('btn-mock-exit-from-pause')?.addEventListener('click', () => {
+    confirmExitTest();
   });
 
   document.getElementById('btn-mock-prev')?.addEventListener('click', () => {

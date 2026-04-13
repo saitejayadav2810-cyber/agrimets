@@ -66,6 +66,7 @@
   <div id="mock-arena" class="hidden">
     <div class="mock-header">
       <button id="btn-mock-exit" class="mock-exit-btn">✕ Quit</button>
+      <button id="btn-mock-pause" class="mock-pause-btn">⏸ Pause</button>
       <span id="mock-progress" class="mock-progress-label">Q 1 / 10</span>
       <span id="mock-arena-timer" class="mock-arena-timer">40:00</span>
       <span id="mock-test-label" class="mock-test-name-label">Test 1</span>
@@ -112,6 +113,17 @@
         <button id="btn-mock-submit" class="mock-submit-btn">Submit ✓</button>
       </div>
     </div>
+
+    <div id="mock-pause-overlay" class="mock-pause-overlay hidden">
+      <div class="mock-pause-box">
+        <div class="mock-pause-title">Test Paused</div>
+        <div class="mock-pause-sub">Timer is paused. Resume when you are ready.</div>
+        <div class="mock-pause-actions">
+          <button id="btn-mock-resume" class="mock-pause-resume">▶ Resume</button>
+          <button id="btn-mock-exit-from-pause" class="mock-pause-exit">Exit test</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ── MOCK RESULTS ────────────────────────────────────── -->
@@ -146,6 +158,36 @@
             <span class="score-row-label">Skipped</span>
             <span class="score-row-val" id="count-skip">0</span>
             <span class="score-row-pts muted">±0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis-card">
+        <div class="analysis-title">Profile Analysis</div>
+        <div class="analysis-grid">
+          <div class="analysis-item">
+            <div class="analysis-label">Attempted</div>
+            <div class="analysis-value" id="analysis-attempted">0 / 0</div>
+          </div>
+          <div class="analysis-item">
+            <div class="analysis-label">Accuracy</div>
+            <div class="analysis-value" id="analysis-accuracy">0%</div>
+          </div>
+          <div class="analysis-item">
+            <div class="analysis-label">Net Score %</div>
+            <div class="analysis-value" id="analysis-score-pct">0%</div>
+          </div>
+          <div class="analysis-item">
+            <div class="analysis-label">Time Taken</div>
+            <div class="analysis-value" id="analysis-time-taken">00:00</div>
+          </div>
+          <div class="analysis-item">
+            <div class="analysis-label">Avg Time / Q</div>
+            <div class="analysis-value" id="analysis-avg-time">0s</div>
+          </div>
+          <div class="analysis-item">
+            <div class="analysis-label">Performance</div>
+            <div class="analysis-value" id="analysis-band">Needs improvement</div>
           </div>
         </div>
       </div>
