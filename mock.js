@@ -129,7 +129,25 @@ async function loadMockData() {
     return n;
   });
 
-  // Try local mock-tests.json first
+  // 1) Try Google Sheets API first (Telegram app approach)
+  // Spreadsheet ID used in your telegram app, sheet name 'moaktest'
+  const SPREADSHEET_ID = '1x_SEEuZDey4XfoyYRDnrAN1eZcJ_d65PPDeLUWHRyGo';
+  const SHEET_NAME = 'moaktest';
+  
+  try {
+    const res = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/${SHEET_NAME}`, { cache: 'no-store' });
+    if (res.ok) {
+      const raw = await res.json();
+      if (Array.isArray(raw) && raw.length > 0) {
+        MockData.allRows = normalise(raw);
+        return;
+      }
+    }
+  } catch(e) {
+    console.warn('Google Sheets API failed. Falling back to mock-tests.json', e);
+  }
+
+  // 2) Fallback to local mock-tests.json
   try {
     const res = await fetch('./mock-tests.json', { cache: 'no-store' });
     if (res.ok) {
@@ -141,7 +159,7 @@ async function loadMockData() {
     }
   } catch(_) {}
 
-  throw new Error('Could not load mock-tests.json');
+  throw new Error('Could not load mock-tests.json or Google Sheets API');
 }
 
 // ── NAVIGATION ──────────────────────────────────────────────────
@@ -842,6 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Back button: tests → categories
   document.getElementById('btn-tests-back')?.addEventListener('click', () => {
     clearInterval(MockData.countdownInterval);
+    MockData.currentCategory = null;
     openCategories();
   });
 

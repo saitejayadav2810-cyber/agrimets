@@ -9,7 +9,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Syne:wght@700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     /* ── VARIABLES ───────────────────────────────────────── */
@@ -32,9 +32,10 @@
       --text:         #eceeff;
       --text-2:       #b0bce8;
       --text-3:       #6b7fc4;
-      --font-display: 'Syne', system-ui, sans-serif;
-      --font-body:    'DM Sans', system-ui, sans-serif;
-      --font-serif:   'Lora', serif;
+      --font-display: 'DM Sans', system-ui, sans-serif;
+      --font-body:    'Lora', serif;
+      --font-title:   'Inter', system-ui, sans-serif;
+      --font-qa:      'Times New Roman', Times, serif;
       --r-sm: 10px;
       --r-md: 18px;
       --r-lg: 26px;
@@ -236,6 +237,7 @@
     }
     .cat-card:hover::after { opacity: 0.09; }
 
+
     .cat-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 
     .cat-icon {
@@ -255,7 +257,7 @@
     .cat-card:hover .cat-arrow { transform: translate(4px,-4px); color: var(--accent-color, var(--cyan)); }
 
     .cat-name {
-      font-family: var(--font-display);
+      font-family: var(--font-title);
       font-size: 20px; font-weight: 800;
       letter-spacing: -0.01em;
       color: var(--text);
@@ -354,6 +356,34 @@
       .cta-row { flex-direction: column; }
       .btn-primary, .btn-secondary { justify-content: center; }
       .hero { padding: 36px 0 32px; }
+    }
+    /* ── DESKTOP RESPONSIVENESS ──────────────────────────── */
+    @media (min-width: 768px) {
+      body {
+        display: flex;
+        justify-content: center;
+        background-color: #04060a;
+      }
+      .page {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 40px 40px 60px;
+        background-color: var(--bg);
+        border-left: 1px solid var(--glass-border);
+        border-right: 1px solid var(--glass-border);
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        min-height: 100vh;
+        width: 100%;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 16px;
+      }
+      nav, .hero, .features, .history, .ad-section {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
     }
   </style>
 </head>
@@ -505,6 +535,7 @@
   <footer>
     <p>AGRIMETS Mock Tests &nbsp;·&nbsp; Questions updated regularly</p>
     <p style="margin-top:6px; font-size:12px;">Built for AFO, IBPS-AFO &amp; State Agriculture Officer aspirants</p>
+    <p style="margin-top:8px; font-size:12px;"><a href="privacy.html" style="color:var(--text-3); text-decoration:none;">Privacy Policy</a></p>
   </footer>
 
 </div><!-- /.page -->

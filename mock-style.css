@@ -27,9 +27,10 @@
   --text-secondary: #b0bce8;
   --text-muted:     #6b7fc4;
   --on-dark:      #ffffff;
-  --font-display: 'Syne', system-ui, sans-serif;
-  --font-body:    'DM Sans', system-ui, sans-serif;
-  --font-qa:      'Lora', 'Times New Roman', serif;
+  --font-display: 'DM Sans', system-ui, sans-serif;
+  --font-body:    'Lora', serif;
+  --font-title:   'Inter', system-ui, sans-serif;
+  --font-qa:      'Times New Roman', Times, serif;
   --r-sm:  8px;
   --r-md:  16px;
   --r-lg:  24px;
@@ -94,7 +95,7 @@ body {
 }
 .back-link:active { opacity: 0.7; }
 .view-title {
-  font-family: var(--font-display);
+  font-family: var(--font-title);
   font-size: 20px; font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -664,3 +665,46 @@ body {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+/* ── DESKTOP RESPONSIVENESS ─────────────────────────────────── */
+@media (min-width: 768px) {
+  #app {
+    max-width: 1024px;
+    margin: 0 auto;
+    border-left: 1px solid var(--glass-border);
+    border-right: 1px solid var(--glass-border);
+    background-color: var(--surface);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+  
+  .card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    padding: 24px;
+  }
+  
+  .mock-section-label {
+    grid-column: 1 / -1;
+  }
+  
+  .back-link {
+    font-size: 16px;
+  }
+  
+  .view-title {
+    font-size: 24px;
+  }
+
+  .mock-arena-content {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .mock-bottom-bar, .mock-bottom-controls {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+}
+
