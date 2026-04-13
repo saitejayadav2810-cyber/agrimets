@@ -473,7 +473,7 @@ function openCategoryTests(cat) {
   const titleEl = document.getElementById('tests-title');
   const subEl   = document.getElementById('tests-sub');
   const listEl  = document.getElementById('test-list');
-  if (titleEl) titleEl.textContent = cat.key;
+  if (titleEl) titleEl.textContent = `${catEmoji(cat.key)} ${cat.key}`;
 
   const rows = MockData.allRows.filter(r => {
     if ((r.category || 'Uncategorised').trim().toLowerCase() !== cat.norm) return false;
@@ -488,11 +488,20 @@ function openCategoryTests(cat) {
     groups[t].push(r);
   });
 
+  const isPYQ = cat.norm.includes('pyq') || cat.norm.includes('afo');
+
   MockData.testList = Object.entries(groups)
     .sort(([a],[b]) => { const na=parseFloat(a), nb=parseFloat(b); return !isNaN(na)&&!isNaN(nb)?na-nb:a.localeCompare(b); })
-    .map(([testNo, questions]) => ({ testNo, name: `${cat.key} — ${testNo}`, questions }));
+    .map(([testNo, questions]) => {
+      const isNum = /^\d+$/.test(testNo.trim());
+      const displayName = isPYQ
+        ? (isNum ? `Paper ${testNo}` : `${testNo} Paper`)
+        : (isNum ? `Test ${testNo}` : testNo);
+      return { testNo, name: displayName, questions };
+    });
 
-  if (subEl) subEl.textContent = `${MockData.testList.length} test${MockData.testList.length!==1?'s':''} available`;
+  const totalQs = rows.length;
+  if (subEl) subEl.textContent = `${MockData.testList.length} ${isPYQ ? 'paper' : 'test'}${MockData.testList.length !== 1 ? 's' : ''} · ${totalQs.toLocaleString('en-IN')} questions`;
 
   renderTestList();
 }
@@ -521,7 +530,7 @@ function renderTestList() {
       <div class="mock-test-num">${escHtml(test.testNo)}</div>
       <div class="mock-test-info">
         <div class="mock-test-name">${escHtml(test.name)}</div>
-        <div class="mock-test-meta">${test.questions.length} questions · −0.25 negative marking</div>
+        <div class="mock-test-meta">${test.questions.length} questions · −0.25 marking</div>
       </div>
       <span class="mock-test-arrow">›</span>`;
     card.addEventListener('click', () => startMockTest(test));
@@ -892,7 +901,7 @@ function routeFromURL() {
 
       if (normKey) {
         const catObj = { key: normToRaw[normKey], norm: normKey, count: countByNorm[normKey], testNos: [...testsByNorm[normKey]] };
-        openCategories().then(() => openCategoryTests(catObj));
+        openCategoryTests(catObj);
       } else {
         openCategories();
       }
