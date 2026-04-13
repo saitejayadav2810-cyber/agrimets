@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b14" />
+  <meta name="description" content="AGRIMETS Mock Tests — Full MCQ tests with negative marking, timer, and instant results for AFO & agricultural competitive exams." />
+  <title>AGRIMETS — Mock Tests</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Syne:wght@700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── VARIABLES ───────────────────────────────────────── */
+    :root {
+      --bg:           #070b14;
+      --surface:      #0d1220;
+      --surface-2:    #141928;
+      --glass:        rgba(255,255,255,0.055);
+      --glass-border: rgba(255,255,255,0.10);
+      --cyan:         #18ffff;
+      --cyan-dim:     rgba(24,255,255,0.12);
+      --cyan-glow:    rgba(24,255,255,0.28);
+      --green:        #00f080;
+      --green-dim:    rgba(0,240,128,0.12);
+      --amber:        #ffbe00;
+      --amber-dim:    rgba(255,190,0,0.12);
+      --blue:         #5c7cff;
+      --blue-dim:     rgba(92,124,255,0.12);
+      --purple:       #9b6dff;
+      --text:         #eceeff;
+      --text-2:       #b0bce8;
+      --text-3:       #6b7fc4;
+      --font-display: 'Syne', system-ui, sans-serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --font-serif:   'Lora', serif;
+      --r-sm: 10px;
+      --r-md: 18px;
+      --r-lg: 26px;
+    }
+
+    /* ── RESET ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      /* ambient glow texture */
+      background-image:
+        radial-gradient(ellipse 80% 50% at 10% 0%,   rgba(24,255,255,0.055) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 100%,  rgba(92,124,255,0.08)  0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 50% 40%,   rgba(155,109,255,0.03) 0%, transparent 70%);
+    }
+
+    /* ── NOISE GRAIN OVERLAY ─────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.6;
+    }
+
+    /* ── GRID DOT TEXTURE ────────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none; z-index: 0; opacity: 0.35;
+    }
+
+    /* ── LAYOUT ──────────────────────────────────────────── */
+    .page { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0 16px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .nav-logo span { color: var(--cyan); }
+    .nav-badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(24,255,255,0.22);
+      color: var(--cyan);
+      padding: 5px 12px; border-radius: 20px;
+    }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      padding: 52px 0 44px;
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 18px;
+    }
+    .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 9vw, 62px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .hero-title .accent { color: var(--cyan); }
+    .hero-title .dim { color: var(--text-3); }
+
+    .hero-sub {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      color: var(--text-2);
+      line-height: 1.65;
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+
+    /* ── PILL STATS ──────────────────────────────────────── */
+    .hero-stats {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 36px;
+    }
+    .stat-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-2);
+      backdrop-filter: blur(6px);
+    }
+    .stat-pill strong { color: var(--text); font-weight: 700; }
+    .stat-pill .dot { width: 5px; height: 5px; border-radius: 50%; }
+
+    /* ── CTA BUTTONS ─────────────────────────────────────── */
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--cyan);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 15px; font-weight: 700;
+      padding: 14px 28px;
+      border-radius: var(--r-sm);
+      border: none; cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 0 30px var(--cyan-glow);
+      white-space: nowrap;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 40px var(--cyan-glow); }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--glass);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px; font-weight: 500;
+      padding: 13px 24px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--glass-border);
+      cursor: pointer; text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); }
+
+    /* ── DIVIDER ─────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 16px;
+    }
+    .section-gap { margin-top: 52px; animation: fadeUp 0.7s 0.15s ease both; }
+
+    /* ── CATEGORY CARDS ──────────────────────────────────── */
+    .cat-grid { display: flex; flex-direction: column; gap: 14px; }
+
+    .cat-card {
+      position: relative; overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r-md);
+      padding: 26px 28px;
+      cursor: pointer; text-decoration: none;
+      display: block;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .cat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 50px rgba(0,0,0,0.5); }
+    .cat-card:active { transform: scale(0.985); }
+
+    /* glow stripe on left edge */
+    .cat-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      border-radius: 3px 0 0 3px;
+      transition: box-shadow 0.3s;
+    }
+    .cat-card:hover::before { box-shadow: 0 0 18px 4px var(--accent-color, var(--cyan)); }
+
+    .cat-card.cyan  { --accent-color: var(--cyan);  }
+    .cat-card.amber { --accent-color: var(--amber); }
+    .cat-card.cyan::before  { background: var(--cyan);  }
+    .cat-card.amber::before { background: var(--amber); }
+
+    /* ambient corner glow */
+    .cat-card::after {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: var(--accent-color, var(--cyan));
+      opacity: 0.04; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .cat-card:hover::after { opacity: 0.09; }
+
+    .cat-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+
+    .cat-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .cat-icon.cyan  { background: var(--cyan-dim);  border: 1px solid rgba(24,255,255,0.2); }
+    .cat-icon.amber { background: var(--amber-dim); border: 1px solid rgba(255,190,0,0.2); }
+
+    .cat-arrow {
+      font-size: 20px; color: var(--text-3);
+      transition: transform 0.2s, color 0.2s;
+      margin-top: 4px;
+    }
+    .cat-card:hover .cat-arrow { transform: translate(4px,-4px); color: var(--accent-color, var(--cyan)); }
+
+    .cat-name {
+      font-family: var(--font-display);
+      font-size: 20px; font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    .cat-desc {
+      font-size: 13.5px; color: var(--text-2);
+      line-height: 1.5; margin-bottom: 16px;
+    }
+
+    .cat-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .meta-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 500;
+      padding: 4px 10px; border-radius: 20px;
+      border: 1px solid;
+    }
+    .chip-cyan  { color: var(--cyan);  background: var(--cyan-dim);  border-color: rgba(24,255,255,0.22); }
+    .chip-amber { color: var(--amber); background: var(--amber-dim); border-color: rgba(255,190,0,0.22); }
+    .chip-gray  { color: var(--text-3); background: rgba(255,255,255,0.04); border-color: var(--glass-border); }
+
+    /* ── FEATURE STRIPS ──────────────────────────────────── */
+    .features { margin-top: 52px; animation: fadeUp 0.7s 0.25s ease both; }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .feature-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r-sm);
+      padding: 18px 18px;
+      backdrop-filter: blur(6px);
+    }
+    .feature-ico { font-size: 20px; margin-bottom: 9px; }
+    .feature-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .feature-desc  { font-size: 12.5px; color: var(--text-3); line-height: 1.5; }
+
+    /* ── RESULTS HISTORY ─────────────────────────────────── */
+    .history { margin-top: 52px; animation: fadeUp 0.7s 0.3s ease both; }
+    .history-empty {
+      text-align: center; padding: 44px 20px;
+      background: var(--glass);
+      border: 1px dashed var(--glass-border);
+      border-radius: var(--r-md);
+      color: var(--text-3); font-size: 14px; line-height: 1.8;
+    }
+    .history-empty strong { color: var(--text-2); display: block; font-size: 16px; margin-bottom: 6px; }
+    .history-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .result-card {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r-sm);
+      padding: 14px 18px;
+    }
+    .result-score {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: var(--cyan-dim); border: 1px solid rgba(24,255,255,0.2);
+    }
+    .result-score .pct { font-size: 18px; font-weight: 800; color: var(--cyan); line-height: 1; }
+    .result-score .pct-label { font-size: 9px; color: var(--text-3); margin-top: 1px; }
+    .result-info { flex: 1; min-width: 0; }
+    .result-name { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .result-meta { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+    .result-right { text-align: right; flex-shrink: 0; }
+    .result-correct { font-size: 14px; font-weight: 700; color: var(--green); }
+    .result-wrong   { font-size: 12px; color: var(--text-3); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      margin-top: 70px; padding-top: 24px;
+      border-top: 1px solid var(--glass-border);
+      text-align: center;
+      font-size: 13px; color: var(--text-3);
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    footer a { color: var(--text-2); text-decoration: none; }
+    footer a:hover { color: var(--cyan); }
+
+    /* ── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SCROLLBAR ───────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .feature-grid { grid-template-columns: 1fr; }
+      .cta-row { flex-direction: column; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+      .hero { padding: 36px 0 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">AGRI<span>METS</span></div>
+    <div class="nav-badge">Mock Tests</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      Agriculture Competitive Exams
+    </div>
+
+    <h1 class="hero-title">
+      Practice.<br>
+      <span class="accent">Score.</span><br>
+      <span class="dim">Succeed.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Full-length MCQ mock tests for AFO & agricultural exams — with a 40-minute timer, bubble navigator, and instant result analysis.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat-pill">
+        <span class="dot" style="background:var(--cyan); box-shadow:0 0 6px var(--cyan)"></span>
+        <strong>1,972</strong> questions
+      </div>
+      <div class="stat-pill">
+        <span class="dot" style="background:var(--green); box-shadow:0 0 6px var(--green)"></span>
+        <strong>35</strong> mock tests
+      </div>
+      <div class="stat-pill">
+        <span class="dot" style="background:var(--amber); box-shadow:0 0 6px var(--amber)"></span>
+        Negative marking
+      </div>
+      <div class="stat-pill">
+        <span class="dot" style="background:var(--purple); box-shadow:0 0 6px var(--purple)"></span>
+        40-min timer
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="#categories" class="btn-primary">
+        Start a test
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#history" class="btn-secondary">
+        View my results
+      </a>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section-gap" id="categories">
+    <div class="section-label">Choose a category</div>
+
+    <div class="cat-grid">
+
+      <!-- Test Series -->
+      <a href="mock.html?cat=test-series" class="cat-card cyan" id="card-test-series">
+        <div class="cat-top">
+          <div class="cat-icon cyan">📋</div>
+          <div class="cat-arrow">↗</div>
+        </div>
+        <div class="cat-name">Test Series</div>
+        <div class="cat-desc">Sequential mock tests releasing daily at 8 AM. Practice with subject-mix questions across horticulture, agronomy, soil science, and more.</div>
+        <div class="cat-meta">
+          <span class="meta-chip chip-cyan">26 tests</span>
+          <span class="meta-chip chip-cyan">1,372 questions</span>
+          <span class="meta-chip chip-gray">Daily unlock · 8 AM</span>
+        </div>
+      </a>
+
+      <!-- AFO Mains PYQ -->
+      <a href="mock.html?cat=afo-mains" class="cat-card amber" id="card-afo-mains">
+        <div class="cat-top">
+          <div class="cat-icon amber">🏛</div>
+          <div class="cat-arrow">↗</div>
+        </div>
+        <div class="cat-name">AFO Mains PYQ</div>
+        <div class="cat-desc">Previous year question papers from 2018–2025 for the Agriculture Field Officer Mains exam. Full papers, year-wise, with negative marking.</div>
+        <div class="cat-meta">
+          <span class="meta-chip chip-amber">10 papers</span>
+          <span class="meta-chip chip-amber">600 questions</span>
+          <span class="meta-chip chip-gray">2018 – 2025</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="section-label">What's included</div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-ico">⏱</div>
+        <div class="feature-title">40-minute timer</div>
+        <div class="feature-desc">Auto-submits when time runs out, just like the real exam.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-ico">🔵</div>
+        <div class="feature-title">Bubble navigator</div>
+        <div class="feature-desc">Jump to any question instantly. Mark for review and come back.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-ico">➖</div>
+        <div class="feature-title">Negative marking</div>
+        <div class="feature-desc">−⅓ for each wrong answer, matching actual exam scoring.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-ico">📊</div>
+        <div class="feature-title">Instant results</div>
+        <div class="feature-desc">Score, accuracy, correct vs wrong breakdown after every test.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-ico">🔁</div>
+        <div class="feature-title">Re-attempt any test</div>
+        <div class="feature-desc">Go back and redo any test from your history with fresh randomisation.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-ico">📱</div>
+        <div class="feature-title">Works offline</div>
+        <div class="feature-desc">All questions stored locally — no internet needed mid-test.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS HISTORY -->
+  <section class="history" id="history">
+    <div class="section-label">Recent results</div>
+    <div id="history-container">
+      <div class="history-empty">
+        <strong>No tests attempted yet</strong>
+        Pick a category above and start your first test.
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>AGRIMETS Mock Tests &nbsp;·&nbsp; Questions updated regularly</p>
+    <p style="margin-top:6px; font-size:12px;">Built for AFO, IBPS-AFO &amp; State Agriculture Officer aspirants</p>
+  </footer>
+
+</div><!-- /.page -->
+
+<script>
+  // ── Load results from localStorage (written by mock engine) ──
+  (function () {
+    const LS_KEY = 'dca_mock_results';
+    const container = document.getElementById('history-container');
+
+    let results = [];
+    try { results = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (_) {}
+
+    if (!Array.isArray(results) || results.length === 0) return;
+
+    // Show latest 5
+    const recent = results.slice(0, 5);
+    container.innerHTML = '';
+
+    const list = document.createElement('div');
+    list.className = 'history-list';
+
+    recent.forEach(r => {
+      const pct = r.total > 0 ? Math.round((r.score / r.total) * 100) : 0;
+      const date = r.ts ? new Date(r.ts).toLocaleDateString('en-IN', { day:'numeric', month:'short' }) : '';
+
+      const card = document.createElement('div');
+      card.className = 'result-card';
+
+      // Color result score based on percentage
+      const scoreColor = pct >= 70 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red, #ff5c5c)';
+      const scoreStyle = `background: color-mix(in srgb, ${scoreColor} 15%, transparent); border-color: color-mix(in srgb, ${scoreColor} 30%, transparent);`;
+
+      card.innerHTML = `
+        <div class="result-score" style="${scoreStyle}">
+          <div class="pct" style="color:${scoreColor}">${pct}%</div>
+          <div class="pct-label">score</div>
+        </div>
+        <div class="result-info">
+          <div class="result-name">${escHtml(r.testName || 'Mock Test')}</div>
+          <div class="result-meta">${escHtml(r.category || '')}${date ? ' · ' + date : ''}</div>
+        </div>
+        <div class="result-right">
+          <div class="result-correct">✓ ${r.correct ?? '—'}</div>
+          <div class="result-wrong">✗ ${r.wrong ?? '—'}</div>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+
+    container.appendChild(list);
+
+    // Add "clear" link if there are results
+    const clr = document.createElement('p');
+    clr.style.cssText = 'text-align:right;margin-top:10px;font-size:12px;';
+    clr.innerHTML = `<a href="#" id="clear-history" style="color:var(--text-3);text-decoration:none;">Clear history</a>`;
+    container.appendChild(clr);
+    document.getElementById('clear-history').addEventListener('click', function (e) {
+      e.preventDefault();
+      localStorage.removeItem(LS_KEY);
+      location.reload();
+    });
+  })();
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── Smooth scroll for in-page links ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>

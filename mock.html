@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b14" />
+  <meta name="description" content="AGRIMETS Mock Tests — Full MCQ tests with timer, negative marking, and instant results." />
+  <title>AGRIMETS — Mock Test Arena</title>
+
+  <!-- Google AdSense — replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=Syne:wght@700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="mock-style.css" />
+</head>
+<body>
+
+<!-- ══ TOAST ════════════════════════════════════════════════ -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- ══ CONFIRM DIALOG ═══════════════════════════════════════ -->
+<div id="confirm-overlay" class="confirm-overlay hidden">
+  <div class="confirm-box">
+    <p id="confirm-msg" class="confirm-msg"></p>
+    <div class="confirm-btns">
+      <button id="confirm-cancel" class="confirm-btn confirm-cancel">Cancel</button>
+      <button id="confirm-ok"     class="confirm-btn confirm-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP SHELL ════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- ── CATEGORY VIEW ───────────────────────────────────── -->
+  <div id="view-categories" class="view active">
+    <div class="view-header">
+      <a href="index.html" class="back-link">← Home</a>
+      <h1 class="view-title">Mock Tests</h1>
+      <span class="view-sub" id="cat-sub">Choose a category</span>
+    </div>
+
+    <!-- AdSense top banner (auto ad) -->
+    <div class="ad-slot" id="ad-top">
+      <!-- ins class="adsbygoogle" ... goes here after AdSense approval -->
+    </div>
+
+    <div id="category-list" class="card-list">
+      <div class="loading-state">⏳ Loading questions…</div>
+    </div>
+  </div>
+
+  <!-- ── TEST LIST VIEW ──────────────────────────────────── -->
+  <div id="view-tests" class="view hidden">
+    <div class="view-header">
+      <button class="back-link" id="btn-tests-back">← Back</button>
+      <h1 class="view-title" id="tests-title">Tests</h1>
+      <span class="view-sub" id="tests-sub">Loading…</span>
+    </div>
+    <div id="test-list" class="card-list"></div>
+  </div>
+
+  <!-- ── MOCK ARENA ──────────────────────────────────────── -->
+  <div id="mock-arena" class="hidden">
+    <div class="mock-header">
+      <button id="btn-mock-exit" class="mock-exit-btn">✕ Quit</button>
+      <span id="mock-progress" class="mock-progress-label">Q 1 / 10</span>
+      <span id="mock-arena-timer" class="mock-arena-timer">40:00</span>
+      <span id="mock-test-label" class="mock-test-name-label">Test 1</span>
+      <div class="font-size-btns">
+        <button class="font-btn font-btn-down" aria-label="Decrease font">A−</button>
+        <button class="font-btn font-btn-up"   aria-label="Increase font">A+</button>
+      </div>
+    </div>
+
+    <div class="mock-bubble-wrap" id="mock-bubble-wrap">
+      <div class="mock-bubble-row" id="mock-bubble-row"></div>
+    </div>
+
+    <div class="mock-question-scroll" id="mock-question-scroll">
+      <div class="mock-question-box">
+        <div id="mock-q-text">Loading question…</div>
+      </div>
+      <div class="mock-options" id="mock-options">
+        <button class="mock-opt" data-opt="a" id="opt-a"></button>
+        <button class="mock-opt" data-opt="b" id="opt-b"></button>
+        <button class="mock-opt" data-opt="c" id="opt-c"></button>
+        <button class="mock-opt" data-opt="d" id="opt-d"></button>
+        <button class="mock-opt" data-opt="e" id="opt-e"></button>
+      </div>
+    </div>
+
+    <div class="mock-bottom-bar">
+      <div class="mock-nav-row">
+        <button id="btn-mock-prev" class="mock-nav-btn" disabled>‹ Prev</button>
+        <div class="mock-nav-center">
+          <div class="mock-status-indicators">
+            <div class="mock-status-dot dot-answered"    id="ind-answered"    title="Answered">0</div>
+            <div class="mock-status-dot dot-review"      id="ind-review"      title="For review">0</div>
+            <div class="mock-status-dot dot-skipped"     id="ind-skipped"     title="Skipped">0</div>
+            <div class="mock-status-dot dot-unattempted" id="ind-unattempted" title="Not viewed">0</div>
+          </div>
+          <span class="mock-nav-hint" id="mock-nav-hint">Tap an option to answer</span>
+        </div>
+        <button id="btn-mock-next" class="mock-nav-btn">Next ›</button>
+      </div>
+      <div class="mock-action-row">
+        <button id="btn-mock-skip"   class="mock-skip-btn">⏭ Skip</button>
+        <button id="btn-mock-review" class="mock-review-btn">🟡 Review</button>
+        <button id="btn-mock-submit" class="mock-submit-btn">Submit ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MOCK RESULTS ────────────────────────────────────── -->
+  <div id="mock-results" class="hidden">
+    <div class="mock-results-inner">
+      <div class="mock-result-hero">
+        <div class="mock-result-icon">📊</div>
+        <h2 class="mock-result-title">Test Complete!</h2>
+        <p class="mock-result-testname" id="mock-result-testname"></p>
+      </div>
+
+      <div class="score-card">
+        <div class="score-block">
+          <span class="score-val" id="mock-final-score">0.00</span>
+          <span class="score-label">Final Score</span>
+        </div>
+        <div class="score-breakdown">
+          <div class="score-row">
+            <span class="score-dot dot-green"></span>
+            <span class="score-row-label">Correct</span>
+            <span class="score-row-val green" id="count-correct">0</span>
+            <span class="score-row-pts green">+<span id="pts-correct">0.00</span></span>
+          </div>
+          <div class="score-row">
+            <span class="score-dot dot-red"></span>
+            <span class="score-row-label">Wrong</span>
+            <span class="score-row-val red" id="count-wrong">0</span>
+            <span class="score-row-pts red">−<span id="pts-wrong">0.00</span></span>
+          </div>
+          <div class="score-row">
+            <span class="score-dot dot-amber"></span>
+            <span class="score-row-label">Skipped</span>
+            <span class="score-row-val" id="count-skip">0</span>
+            <span class="score-row-pts muted">±0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AdSense mid-results slot -->
+      <div class="ad-slot" id="ad-results">
+        <!-- ins class="adsbygoogle" ... goes here after approval -->
+      </div>
+
+      <div class="review-filters">
+        <button class="rev-btn active" data-filter="all">All</button>
+        <button class="rev-btn" data-filter="correct">✓ Correct</button>
+        <button class="rev-btn" data-filter="wrong">✕ Wrong</button>
+        <button class="rev-btn" data-filter="skipped">⏭ Skipped</button>
+      </div>
+
+      <div id="mock-review-list" class="mock-review-list"></div>
+
+      <div class="mock-result-actions">
+        <button id="btn-mock-home" class="mock-home-btn">← Back to Tests</button>
+        <a href="index.html" class="mock-home-btn" style="text-align:center;text-decoration:none;">🏠 Home</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<script src="mock.js"></script>
+</body>
+</html>
