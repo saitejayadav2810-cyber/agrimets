@@ -130,9 +130,9 @@ async function loadMockData() {
   });
 
   // 1) Try Google Sheets API first (Telegram app approach)
-  // Spreadsheet ID used in your telegram app, sheet name 'moaktest'
+  // Spreadsheet ID used in your telegram app, sheet name 'sheet1'
   const SPREADSHEET_ID = '1x_SEEuZDey4XfoyYRDnrAN1eZcJ_d65PPDeLUWHRyGo';
-  const SHEET_NAME = 'moaktest';
+  const SHEET_NAME = 'sheet1';
   
   try {
     const res = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/${SHEET_NAME}`, { cache: 'no-store' });
@@ -492,6 +492,17 @@ function renderTestList() {
   const listEl = document.getElementById('test-list');
   if (!listEl) return;
   listEl.innerHTML = '';
+  
+  if (!MockData.testList || MockData.testList.length === 0) {
+    listEl.innerHTML = `
+      <div class="mock-empty-state">
+        <div class="mock-empty-icon">📁</div>
+        <div class="mock-empty-title">No tests available</div>
+        <div class="mock-empty-sub">Check back later for new tests.</div>
+      </div>`;
+    return;
+  }
+
   MockData.testList.forEach((test, i) => {
     const card = document.createElement('div');
     card.className = 'mock-test-card ' + (CARD_COLORS[i % CARD_COLORS.length] || '');
