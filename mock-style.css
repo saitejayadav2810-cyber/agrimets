@@ -230,10 +230,10 @@ body {
   position: relative; overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--glass-border);
-  border-radius: var(--r-md);
-  padding: 16px 18px;
+  border-radius: var(--r-lg);
+  padding: 20px 18px;
   cursor: pointer;
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; gap: 16px;
   transition: transform 0.15s, border-color 0.18s, box-shadow 0.18s;
   animation: test-card-in 0.22s cubic-bezier(0.34,1.4,0.64,1) both;
   animation-delay: calc(var(--i,0) * 0.04s);
@@ -243,12 +243,13 @@ body {
   to   { opacity:1; transform: translateY(0) scale(1); }
 }
 .mock-test-card:hover {
-  border-color: rgba(255,255,255,0.18);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.28);
+  border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.36);
+  transform: translateY(-2px);
 }
 .mock-test-card:active { transform: scale(0.975); }
 
-/* Rainbow colors */
+/* Rainbow accent — left stripe */
 .mc-red    { border-left: 4px solid #ff5252; }
 .mc-orange { border-left: 4px solid #ff7043; }
 .mc-amber  { border-left: 4px solid #ffbe00; }
@@ -258,31 +259,45 @@ body {
 .mc-purple { border-left: 4px solid #9b6dff; }
 
 .mock-test-num {
-  font-family: var(--font-display); font-size: 14px; font-weight: 800;
+  font-family: var(--font-display); font-size: 15px; font-weight: 800;
   color: var(--text-primary);
-  min-width: 44px; max-width: 60px;
+  min-width: 50px; max-width: 64px;
   flex-shrink: 0;
   background: var(--glass);
   border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  padding: 6px 6px;
+  border-radius: 10px;
+  padding: 10px 8px;
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.25;
   word-break: break-word;
 }
 .mock-test-info { flex: 1; min-width: 0; }
 .mock-test-name {
-  font-family: var(--font-display); font-size: 16px; font-weight: 700;
-  color: var(--text-primary); margin-bottom: 3px;
+  font-family: var(--font-display); font-size: 18px; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 6px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.mock-test-meta { font-size: 12px; color: var(--text-muted); }
+.mock-test-meta {
+  font-size: 13px; color: var(--text-muted);
+  line-height: 1.4;
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+}
+.mock-test-meta-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 11px; font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
 .mock-test-arrow {
-  font-size: 22px; color: var(--text-muted); flex-shrink: 0;
+  font-size: 24px; color: var(--text-muted); flex-shrink: 0;
   transition: transform 0.15s, color 0.15s;
 }
 .mock-test-card:hover .mock-test-arrow {
-  transform: translateX(3px);
+  transform: translateX(4px);
   color: var(--text-secondary);
 }
 
@@ -782,18 +797,46 @@ body {
 }
 
 /* ── AD SLOT ────────────────────────────────────────────────── */
+/* Mobile banner (320×50) by default; leaderboard (728×90) on desktop */
 .ad-slot {
+  display: block;
+  width: 100%;
+  min-height: 60px;
+  margin: 8px 0;
+  padding: 0 14px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Rectangle / medium-rectangle slot (300×250) */
+.ad-slot-rect {
+  min-height: 260px;
+  margin: 12px 0;
+}
+
+/* Leaderboard slot (728×90) on wider screens */
+@media (min-width: 728px) {
+  .ad-slot { min-height: 100px; }
+}
+
+/* Show placeholder outline only while slot is empty (dev helper) */
+.ad-slot:not(:has(ins)):empty {
   background: var(--glass);
   border: 1px dashed rgba(255,255,255,0.08);
   border-radius: var(--r-sm);
-  min-height: 50px; margin: 4px 14px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px; color: rgba(255,255,255,0.15);
+  font-size: 11px; color: rgba(255,255,255,0.18);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.ad-slot:empty::after { content: 'Ad'; }
+.ad-slot:not(:has(ins)):empty::after { content: 'Ad space'; }
 
-/* Hide empty ad slot */
-.ad-slot:not(:has(ins)) { display: none; }
+/* Once an <ins> (AdSense) tag is present, drop the placeholder chrome */
+.ad-slot:has(ins) {
+  background: none;
+  border: none;
+  padding: 0;
+}
 
 /* ── SCROLLBAR ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }

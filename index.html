@@ -194,52 +194,62 @@
       text-transform: uppercase; color: var(--text-3);
       margin-bottom: 16px;
     }
-    .sunday-highlight-banner {
-      margin: 4px 0 16px;
-      border: 1px solid rgba(255,190,0,0.26);
-      background: linear-gradient(135deg, rgba(255,190,0,0.16), rgba(24,255,255,0.10));
-      border-radius: var(--r-md);
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-    .sunday-highlight-banner.live {
-      box-shadow: 0 0 0 1px rgba(255,190,0,0.25), 0 0 26px rgba(255,190,0,0.22);
-      animation: sundayPulse 1.8s ease-in-out infinite;
-    }
-    @keyframes sundayPulse {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-1px); }
-    }
-    .sunday-meta { min-width: 0; }
-    .sunday-title {
-      font-family: var(--font-title);
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--amber);
-      margin-bottom: 3px;
-    }
-    .sunday-sub {
-      font-size: 12px;
-      color: var(--text-2);
-      line-height: 1.45;
-    }
-    .sunday-cta {
-      flex-shrink: 0;
-      border: 1px solid rgba(255,190,0,0.4);
-      background: rgba(255,190,0,0.14);
-      color: #ffd66b;
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 11px;
-      font-weight: 700;
-      text-decoration: none;
-      white-space: nowrap;
-      font-family: var(--font-title);
-    }
     .section-gap { margin-top: 52px; animation: fadeUp 0.7s 0.15s ease both; }
+
+    /* ── AD SLOTS ────────────────────────────────────────── */
+    .ad-slot {
+      display: block;
+      width: 100%;
+      min-height: 60px;
+      margin: 12px 0;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    /* Show a placeholder outline while slot has no ad content */
+    .ad-slot:not(:has(ins)):empty {
+      background: var(--glass);
+      border: 1px dashed rgba(255,255,255,0.08);
+      border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: rgba(255,255,255,0.18);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .ad-slot:not(:has(ins)):empty::after { content: 'Ad space'; }
+    /* Once AdSense <ins> is present, drop placeholder chrome */
+    .ad-slot:has(ins) { background: none; border: none; }
+    /* Rectangle / medium-rectangle variant (300×250) */
+    .ad-slot-rect { min-height: 260px; margin: 16px 0; }
+    /* Leaderboard (728×90) on wider screens */
+    @media (min-width: 728px) { .ad-slot { min-height: 100px; } }
+
+    /* ── TELEGRAM FAB ────────────────────────────────────── */
+    #tg-fab {
+      position: fixed;
+      bottom: 24px; right: 18px;
+      z-index: 9990;
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #229ED9 0%, #1a8fc4 100%);
+      color: #fff;
+      border-radius: 30px;
+      padding: 12px 18px 12px 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(34,158,217,0.50), 0 2px 8px rgba(0,0,0,0.3);
+      font-family: var(--font-display), system-ui, sans-serif;
+      font-size: 14px; font-weight: 700;
+      user-select: none;
+      touch-action: none;
+      transition: box-shadow 0.2s, transform 0.1s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    #tg-fab:hover {
+      box-shadow: 0 6px 32px rgba(34,158,217,0.65), 0 2px 12px rgba(0,0,0,0.35);
+      transform: translateY(-2px);
+    }
+    #tg-fab:active { transform: scale(0.95); }
+    #tg-fab.dragging { cursor: grabbing; box-shadow: 0 8px 40px rgba(34,158,217,0.55); }
+    .tg-fab-icon { font-size: 20px; line-height: 1; flex-shrink: 0; }
+    .tg-fab-label { white-space: nowrap; }
 
     /* ── CATEGORY CARDS ──────────────────────────────────── */
     .cat-grid { display: flex; flex-direction: column; gap: 14px; }
@@ -403,8 +413,8 @@
       .hero { padding: 36px 0 32px; }
       .page { padding: 0 14px 64px; }
       .cat-card { padding: 20px 18px; }
-      .sunday-highlight-banner { padding: 12px; align-items: flex-start; }
-      .sunday-cta { margin-top: 1px; }
+      #tg-fab { padding: 10px 14px 10px 12px; font-size: 13px; }
+      .tg-fab-icon svg { width: 18px; height: 18px; }
     }
     /* ── DESKTOP RESPONSIVENESS ──────────────────────────── */
     @media (min-width: 768px) {
@@ -477,17 +487,16 @@
 
   <!-- CATEGORIES -->
   <section class="section-gap" id="categories">
-    <!-- AdSense Top Banner -->
-    <div class="ad-slot" id="ad-top"></div>
-    
-    <div class="section-label" style="margin-top: 16px;">Choose a category</div>
-    <div class="sunday-highlight-banner" id="sunday-highlight">
-      <div class="sunday-meta">
-        <div class="sunday-title">🏆 Sunday Mock Spotlight</div>
-        <div class="sunday-sub" id="sunday-highlight-sub">Every Sunday at 11:00 AM — 100 mixed questions with full analysis.</div>
-      </div>
-      <a href="mock.html" class="sunday-cta" id="sunday-highlight-cta">Open Mock Arena</a>
+    <!-- AdSense Top Banner (320×50 mobile / 728×90 desktop leaderboard) -->
+    <div class="ad-slot" id="ad-top">
+      <!-- After AdSense approval, insert:
+           <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      -->
     </div>
+
+    <div class="section-label" style="margin-top: 16px;">Choose a category</div>
 
     <div class="cat-grid">
 
@@ -522,9 +531,25 @@
       </a>
 
     </div>
-    
-    <!-- AdSense Bottom Banner -->
-    <div class="ad-slot" id="ad-bottom" style="margin-top: 30px;"></div>
+
+    <!-- AdSense Bottom Banner (320×50 mobile / 728×90 desktop leaderboard) -->
+    <div class="ad-slot" id="ad-bottom" style="margin-top: 24px;">
+      <!-- After AdSense approval, insert:
+           <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      -->
+    </div>
+
+    <!-- AdSense Rectangle / Medium Rectangle (300×250) — shows between categories and history -->
+    <div class="ad-slot ad-slot-rect" id="ad-rect" style="margin-top: 16px;">
+      <!-- After AdSense approval, insert:
+           <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot="XXXXXXXXXX" data-ad-format="rectangle" data-full-width-responsive="false"
+                style="width:300px;height:250px;margin:0 auto;display:block;"></ins>
+           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      -->
+    </div>
   </section>
 
   <!-- RESULTS HISTORY -->
@@ -546,6 +571,16 @@
   </footer>
 
 </div><!-- /.page -->
+
+<!-- ── TELEGRAM FLOATING BUTTON ──────────────────────────── -->
+<div id="tg-fab" role="button" aria-label="Join us on Telegram" tabindex="0">
+  <span class="tg-fab-icon">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M21.8 2.6L1.4 10.3c-1.3.5-1.3 1.3-.2 1.6l5.2 1.6 12-7.6c.6-.4 1.1-.2.7.2L8.5 16.1v2.2c0 .7.9 1 1.4.5l2.6-2.5 5.3 3.9c1 .5 1.7.3 1.9-.9l3.4-15.9c.4-1.5-.6-2.2-1.3-1.8z" fill="white"/>
+    </svg>
+  </span>
+  <span class="tg-fab-label">Join Telegram</span>
+</div>
 
 <script>
   // ── Load results from localStorage (written by mock engine) ──
@@ -653,27 +688,6 @@
       .catch(() => {});
   })();
 
-  // ── Sunday mock highlight ──
-  (function () {
-    const card = document.getElementById('sunday-highlight');
-    const sub  = document.getElementById('sunday-highlight-sub');
-    const cta  = document.getElementById('sunday-highlight-cta');
-    if (!card || !sub || !cta) return;
-
-    const now = new Date();
-    const isSunday = now.getDay() === 0;
-    const live = isSunday && now.getHours() >= 11;
-    if (live) {
-      card.classList.add('live');
-      sub.textContent = 'LIVE now — Sunday Mock is unlocked. Start now and check complete profile analysis after submission.';
-      cta.textContent = 'Start Sunday Mock';
-    } else if (isSunday) {
-      card.classList.add('live');
-      sub.textContent = 'Sunday special day: mock unlocks at 11:00 AM. Get ready for 100 mixed questions.';
-      cta.textContent = 'Open Mock Arena';
-    }
-  })();
-
   function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
@@ -685,6 +699,89 @@
       if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
   });
+
+  // ── Draggable Telegram FAB ──────────────────────────────────
+  (function () {
+    const TG_URL = 'https://t.me/Agrimets_bot/agrimets';
+    const fab = document.getElementById('tg-fab');
+    if (!fab) return;
+
+    let dragging = false, moved = false;
+    let startX = 0, startY = 0, origLeft = 0, origTop = 0;
+
+    function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+    function getPos() {
+      const r = fab.getBoundingClientRect();
+      return { left: r.left, top: r.top };
+    }
+
+    function applyPos(left, top) {
+      fab.style.right  = 'auto';
+      fab.style.bottom = 'auto';
+      fab.style.left   = clamp(left, 0, window.innerWidth  - fab.offsetWidth)  + 'px';
+      fab.style.top    = clamp(top,  0, window.innerHeight - fab.offsetHeight) + 'px';
+    }
+
+    // Mouse
+    fab.addEventListener('mousedown', function (e) {
+      dragging = true; moved = false;
+      const pos = getPos();
+      startX = e.clientX; startY = e.clientY;
+      origLeft = pos.left; origTop = pos.top;
+      fab.style.transition = 'none';
+      fab.classList.add('dragging');
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+      applyPos(origLeft + dx, origTop + dy);
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (!dragging) return;
+      dragging = false;
+      fab.classList.remove('dragging');
+      fab.style.transition = '';
+      if (!moved) window.open(TG_URL, '_blank', 'noopener,noreferrer');
+    });
+
+    // Touch
+    fab.addEventListener('touchstart', function (e) {
+      moved = false;
+      const t = e.touches[0];
+      const pos = getPos();
+      startX = t.clientX; startY = t.clientY;
+      origLeft = pos.left; origTop = pos.top;
+      fab.style.transition = 'none';
+      fab.classList.add('dragging');
+    }, { passive: true });
+
+    fab.addEventListener('touchmove', function (e) {
+      const t = e.touches[0];
+      const dx = t.clientX - startX, dy = t.clientY - startY;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+      applyPos(origLeft + dx, origTop + dy);
+      e.preventDefault();
+    }, { passive: false });
+
+    fab.addEventListener('touchend', function () {
+      fab.classList.remove('dragging');
+      fab.style.transition = '';
+      if (!moved) window.open(TG_URL, '_blank', 'noopener,noreferrer');
+    });
+
+    // Keyboard accessibility
+    fab.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') e.preventDefault();
+      if (e.key === 'Enter' || e.key === ' ') {
+        window.open(TG_URL, '_blank', 'noopener,noreferrer');
+      }
+    });
+  })();
 </script>
 </body>
 </html>
