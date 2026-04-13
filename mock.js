@@ -530,7 +530,11 @@ function renderTestList() {
       <div class="mock-test-num">${escHtml(test.testNo)}</div>
       <div class="mock-test-info">
         <div class="mock-test-name">${escHtml(test.name)}</div>
-        <div class="mock-test-meta">${test.questions.length} questions · −0.25 negative marking</div>
+        <div class="mock-test-meta">
+          <span class="mock-test-meta-badge">📝 ${test.questions.length} Qs</span>
+          <span class="mock-test-meta-badge">⏱ ${Math.round(MOCK_TIMER_SECS / 60)} min</span>
+          <span class="mock-test-meta-badge">−0.25 NM</span>
+        </div>
       </div>
       <span class="mock-test-arrow">›</span>`;
     card.addEventListener('click', () => startMockTest(test));
