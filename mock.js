@@ -54,7 +54,6 @@ const MockData = {
   countdownInterval: null,
   isPaused:          false,
   pauseStartedAt:    null,
-  totalPausedMs:     0,
   testStartedAt:     null,
 };
 
@@ -156,9 +155,6 @@ function setPause(paused) {
   }
 
   if (!MockData.isPaused) return;
-  if (MockData.pauseStartedAt) {
-    MockData.totalPausedMs += Math.max(0, Date.now() - MockData.pauseStartedAt);
-  }
   resetPauseUI();
   clearInterval(MockData.timerInterval);
   MockData.timerInterval = setInterval(timerTick, 1000);
@@ -542,7 +538,6 @@ function startMockTest(test) {
   MockData.history          = [];
   MockData.testSubmitted    = false;
   MockData.timerSecondsLeft = MOCK_TIMER_SECS;
-  MockData.totalPausedMs    = 0;
   MockData.testStartedAt    = Date.now();
   resetPauseUI();
 

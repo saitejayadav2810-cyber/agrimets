@@ -781,10 +781,6 @@ body {
 
 /* ── DESKTOP RESPONSIVENESS ─────────────────────────────────── */
 @media (min-width: 768px) {
-  body {
-    position: static;
-    overflow: hidden;
-  }
   #app {
     max-width: 1024px;
     margin: 0 auto;
