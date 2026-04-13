@@ -480,46 +480,10 @@ function openCategoryTests(cat) {
   const listEl  = document.getElementById('test-list');
   if (titleEl) titleEl.textContent = cat.key;
 
-  // Scheduled category: hide today's test (only past tests shown)
-  const schedCfg = MOCK_SCHEDULE.find(c => c.catNorm === cat.norm);
-  let allowedTestNos = null;
-
-  if (schedCfg) {
-    const key     = 'dca_daily_' + cat.norm.replace(/\s+/g,'_');
-    const stored  = ls_get(key, { date: '', testNo: null, used: [] });
-    const usedArr = Array.isArray(stored.used) ? stored.used : [];
-    const pastTests = (stored.date === today() && stored.testNo)
-      ? usedArr.filter(t => t !== stored.testNo)
-      : usedArr;
-    allowedTestNos = new Set(pastTests);
-  }
-
   const rows = MockData.allRows.filter(r => {
     if ((r.category || 'Uncategorised').trim().toLowerCase() !== cat.norm) return false;
-    if (allowedTestNos !== null) return allowedTestNos.has(r.test_no || '1');
     return true;
   });
-
-  // Empty state for scheduled category
-  if (schedCfg && rows.length === 0) {
-    const todayTestNo  = getDailyTestNoReadOnly(cat.norm);
-    const hasTodayTest = todayTestNo !== null && MockData.allRows.some(r =>
-      (r.category || '').trim().toLowerCase() === cat.norm && (r.test_no || '1') === todayTestNo
-    );
-    const h = schedCfg.unlockHour;
-    const timeStr = `${h}:00`;
-    const isLive  = new Date().getHours() >= h;
-    const msg    = hasTodayTest ? (isLive ? `Today's test is LIVE on the main screen!` : `Today's test unlocks at ${timeStr}.`) : `No test scheduled today.`;
-    const subMsg = hasTodayTest ? `It will appear here from tomorrow.` : `Check back tomorrow.`;
-    if (subEl)  subEl.textContent = hasTodayTest ? 'Unlocks today' : 'Coming soon';
-    if (listEl) listEl.innerHTML = `
-      <div class="mock-empty-state">
-        <div class="mock-empty-icon">${hasTodayTest ? '⏳' : '📋'}</div>
-        <div class="mock-empty-title">${escHtml(msg)}</div>
-        <div class="mock-empty-sub">${escHtml(subMsg)}</div>
-      </div>`;
-    return;
-  }
 
   // Build test list
   const groups = {};
