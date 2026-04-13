@@ -54,7 +54,6 @@ const MockData = {
   countdownInterval: null,
   isPaused:          false,
   pauseStartedAt:    null,
-  testStartedAt:     null,
 };
 
 // ── UTILS ───────────────────────────────────────────────────────
@@ -538,7 +537,6 @@ function startMockTest(test) {
   MockData.history          = [];
   MockData.testSubmitted    = false;
   MockData.timerSecondsLeft = MOCK_TIMER_SECS;
-  MockData.testStartedAt    = Date.now();
   resetPauseUI();
 
   const n = MockData.questions.length;
