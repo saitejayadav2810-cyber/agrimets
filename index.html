@@ -3,185 +3,303 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>B Sai Teja — Agribusiness & Digital Strategy</title>
-<meta name="description" content="Portfolio of B Sai Teja, MBA Agribusiness Management (PJTSAU). Market research, business operations and business development for agri-input, agri-tech and food processing.">
+<title>B Sai Teja — Agribusiness Management Graduate | Market Research & Business Operations</title>
+<meta name="description" content="Portfolio of B Sai Teja, Agribusiness Management Graduate (PJTSAU). Market research, business operations and business development for agri-input, agri-tech and food-processing organisations.">
 <style>
-  :root{--bg:#0b1f14;--bg2:#10291a;--green:#7ed957;--gold:#e8c66a;--ink:#f2f7f2;--muted:#a8c3ad;--line:#24402e}
+  :root{
+    --bg:#0f0a1e; --panel:#17102e; --panel2:#1d1340;
+    --line:#2e2350; --text:#f4f2fa; --muted:#b8b0d0; --muted2:#9488b8;
+    --purple:#8b5cf6; --pink:#d946ef; --grad:linear-gradient(135deg,#8b5cf6,#d946ef);
+    --radius:16px;
+  }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;overflow-x:hidden}
-  a{color:var(--green)}
-  #scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-  .content{position:relative;z-index:1}
-  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
-  header{min-height:100vh;display:flex;align-items:center;padding:80px 0 60px}
-  .badge{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:6px 14px;color:var(--green);font-size:.9rem;background:rgba(16,41,26,.7)}
-  header h1{font-size:3.2rem;line-height:1.1;margin-top:20px}
-  header h1 span{color:var(--green)}
-  header p.lead{font-size:1.25rem;color:var(--muted);margin-top:18px;max-width:640px}
-  .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
-  .btn{display:inline-block;background:var(--green);color:#07130b!important;text-decoration:none;padding:12px 24px;border-radius:10px;font-weight:700}
-  .btn.ghost{background:transparent;color:var(--ink)!important;border:1px solid var(--line)}
-  nav{position:sticky;top:0;z-index:2;background:rgba(11,31,20,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0}
-  nav .wrap{display:flex;gap:22px;flex-wrap:wrap}
-  nav a{text-decoration:none;font-weight:600;color:var(--ink)}
-  section{padding:64px 0}
-  h2{font-size:1.8rem;margin-bottom:8px}
-  h2 span{color:var(--gold)}
-  .sec-sub{color:var(--muted);margin-bottom:24px}
-  .card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:16px}
-  .card h3{font-size:1.1rem}
-  .card .meta{color:var(--muted);font-size:.95rem;margin-top:4px}
-  .card p{margin-top:10px;color:#d7e6d9}
-  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .tags span{border:1px solid var(--line);border-radius:20px;padding:5px 13px;font-size:.9rem;color:#d7e6d9;background:rgba(11,31,20,.6)}
-  .timeline{border-left:2px solid var(--line);margin-left:8px;padding-left:24px}
-  .timeline .item{margin-top:24px;position:relative}
-  .timeline .item::before{content:"";position:absolute;left:-32px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--green)}
-  footer{padding:40px 0 56px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
-  @media(max-width:640px){header h1{font-size:2.3rem}}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.65}
+  a{color:#c4b5fd}
+  .wrap{max-width:960px;margin:0 auto;padding:0 clamp(18px,4vw,32px)}
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(15,10,30,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:clamp(12px,3vw,26px);overflow-x:auto;padding-top:12px;padding-bottom:12px;scrollbar-width:none}
+  nav .wrap::-webkit-scrollbar{display:none}
+  nav a{text-decoration:none;font-weight:600;color:var(--text);white-space:nowrap;font-size:.98rem}
+  nav a:hover{color:#d8b4fe}
+  /* ---------- hero ---------- */
+  header{position:relative;overflow:hidden;padding:clamp(56px,9vw,96px) 0 clamp(48px,7vw,72px)}
+  #hero3d{position:absolute;inset:0;width:100%;height:100%;opacity:.45;pointer-events:none}
+  header .wrap{position:relative}
+  .hero-grid{display:flex;gap:clamp(24px,5vw,56px);align-items:center;flex-wrap:wrap}
+  .avatar{flex:0 0 auto;width:clamp(128px,22vw,168px);height:clamp(128px,22vw,168px);border-radius:50%;padding:5px;background:var(--grad);box-shadow:0 0 0 6px rgba(139,92,246,.15),0 0 42px rgba(217,70,239,.45);animation:glow 3.2s ease-in-out infinite}
+  @keyframes glow{0%,100%{box-shadow:0 0 0 6px rgba(139,92,246,.15),0 0 30px rgba(217,70,239,.35)}50%{box-shadow:0 0 0 9px rgba(139,92,246,.22),0 0 54px rgba(217,70,239,.6)}}
+  .avatar span{display:flex;width:100%;height:100%;border-radius:50%;background:#1d1340;align-items:center;justify-content:center;font-size:clamp(2.4rem,7vw,3.4rem);font-weight:800;background:linear-gradient(135deg,#a78bfa,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:6px 14px;color:#d8b4fe;font-size:.88rem;background:rgba(23,16,46,.8)}
+  h1{font-size:clamp(2.2rem,6vw,3.6rem);line-height:1.08;margin-top:18px}
+  h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tagline{font-size:clamp(1.05rem,2.6vw,1.35rem);color:var(--muted);margin-top:14px;max-width:620px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .btn{display:inline-block;background:var(--grad);color:#fff!important;text-decoration:none;padding:12px 24px;border-radius:10px;font-weight:700;min-height:44px;line-height:1.4}
+  .btn.ghost{background:transparent;color:var(--text)!important;border:1px solid var(--line)}
+  .btn:hover{filter:brightness(1.12)}
+  /* ---------- sections ---------- */
+  section{padding:clamp(44px,7vw,72px) 0}
+  h2{font-size:clamp(1.5rem,4vw,2rem);margin-bottom:6px}
+  h2 span{color:#d8b4fe}
+  .sec-sub{color:var(--muted);margin-bottom:26px;max-width:720px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,3.5vw,26px);margin-top:16px;transition:transform .25s ease,border-color .25s ease}
+  .card:hover{transform:translateY(-3px);border-color:#7c5cf0}
+  .card h3{font-size:1.12rem}
+  .meta{color:var(--muted);font-size:.94rem;margin-top:4px}
+  .card p{margin-top:10px;color:#ddd6f2}
+  /* ---------- stats ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 16px;text-align:center}
+  .stat b{display:block;font-size:clamp(1.4rem,4vw,2rem);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat span{color:var(--muted);font-size:.88rem}
+  /* ---------- skills ---------- */
+  .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .skill-cat h3{font-size:1.02rem;margin-bottom:14px;color:#d8b4fe}
+  .bar{margin-top:12px}
+  .bar label{display:flex;justify-content:space-between;font-size:.94rem;color:#ddd6f2}
+  .bar label span{color:var(--muted)}
+  .track{height:8px;background:#2a2148;border-radius:8px;overflow:hidden;margin-top:6px}
+  .fill{height:100%;width:0;background:var(--grad);border-radius:8px;transition:width 1.1s ease}
+  /* ---------- timeline ---------- */
+  .timeline{border-left:2px solid var(--line);margin-left:6px;padding-left:clamp(18px,4vw,28px)}
+  .timeline .item{margin-top:22px;position:relative}
+  .timeline .item::before{content:"";position:absolute;left:calc(-1 * clamp(18px,4vw,28px) - 7px);top:9px;width:12px;height:12px;border-radius:50%;background:var(--grad);box-shadow:0 0 0 4px rgba(139,92,246,.2)}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .tags span{border:1px solid var(--line);border-radius:20px;padding:5px 13px;font-size:.88rem;color:#ddd6f2;background:rgba(23,16,46,.7)}
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:none}
+  footer{padding:36px 0 52px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+  /* ---------- mobile ---------- */
+  @media(max-width:640px){
+    .skill-grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .hero-grid{flex-direction:column;align-items:flex-start}
+    .btn{width:100%;text-align:center}
+    .cta{flex-direction:column}
+    #hero3d{opacity:.3}
+    section{padding-top:40px;padding-bottom:40px}
+  }
 </style>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
 </script>
 </head>
 <body>
-<canvas id="scene"></canvas>
-<div class="content">
 <nav><div class="wrap">
-  <a href="#about">About</a><a href="#experience">Experience</a><a href="#research">Research</a><a href="#projects">Projects</a><a href="#education">Education</a><a href="#contact">Contact</a>
+  <a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#research">Research</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
 </div></nav>
-<header><div class="wrap">
-  <span class="badge">Available for Full-Time Roles · 2026</span>
-  <h1>B. Sai Teja<br><span>Agribusiness &amp; Digital Strategy</span></h1>
-  <p class="lead">MBA Agribusiness graduate bridging deep agricultural field knowledge with modern business development and digital skills — currently building millet value chains at ICAR-IIMR, Hyderabad.</p>
-  <div class="cta">
-    <a class="btn" href="mailto:saiteja@agrimets.app">saiteja@agrimets.app</a>
-    <a class="btn ghost" href="https://www.linkedin.com/in/saitejabaddula">LinkedIn</a>
-    <a class="btn ghost" href="#projects">See my work</a>
+
+<header>
+  <canvas id="hero3d"></canvas>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="avatar" aria-label="B Sai Teja initials"><span>ST</span></div>
+      <div>
+        <span class="pill">Open to work · Recruiters only · Hyderabad · On-site / Hybrid / Remote</span>
+        <h1>B Sai Teja<br><span>Agribusiness Management Graduate</span></h1>
+        <p class="tagline">Market Research · Business Operations · Business Development<br>Millet Value Chain – NutriHub, ICAR-IIMR · Seeking desk-based roles in agri-input, agri-tech &amp; food processing</p>
+        <div class="cta">
+          <a class="btn" href="mailto:saiteja@agrimets.app">saiteja@agrimets.app</a>
+          <a class="btn ghost" href="https://www.linkedin.com/in/saitejabaddula">LinkedIn</a>
+          <a class="btn ghost" href="https://github.com/saitejayadav2810-cyber">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>8.07</b><span>MBA CGPA (PJTSAU, 2026)</span></div>
+      <div class="stat"><b>100</b><span>Consumers surveyed</span></div>
+      <div class="stat"><b>20</b><span>Businesses surveyed</span></div>
+      <div class="stat"><b>4</b><span>Internships</span></div>
+    </div>
   </div>
-</div></header>
+</header>
+
 <main class="wrap">
-  <section id="about">
-    <h2>Agricultural Depth. <span>Business Acumen.</span></h2>
-    <p class="sec-sub">MBA (Agribusiness Management), PJTSAU · B.Sc. (Hons.) Agriculture · RAWEP fieldwork, Khammam</p>
-    <p>I am an MBA Agribusiness Management graduate from Professor Jayashankar Telangana State Agricultural University (PJTSAU), 2026, with a B.Sc. (Hons.) Agriculture (CGPA 8.24) and five months of immersive farm-level fieldwork under the Rural Agricultural Work Experience Programme (RAWEP) in Khammam district, Telangana.</p>
-    <p>At the Business Wing of NutriHub, ICAR-IIMR Hyderabad, I contributed to market research, millet-based enterprise development and multi-stakeholder coordination across the value chain. I also executed digital marketing campaigns for Butter Tree Foods, and independently conceived and launched AGRIMETS — a learning platform for agriculture exam aspirants across Telangana.</p>
-    <div class="tags"><span>Millet Value Chain</span><span>Market Research</span><span>Crop Diagnostics</span><span>Soil &amp; Water Analysis</span><span>Farm Advisory</span><span>Extension Services</span><span>Stakeholder Coordination</span><span>Agri-Input</span></div>
-    <div class="tags"><span>Canva</span><span>Social Media Strategy</span><span>SEO Fundamentals</span><span>Content Development</span><span>Microsoft Excel</span><span>Power BI</span><span>Video Editing</span><span>PowerPoint</span></div>
-    <p>Languages: English — Fluent · Telugu — Native · Hindi — Conversational</p>
+  <section id="about" class="reveal">
+    <h2>About <span>Me</span></h2>
+    <p class="sec-sub">Greater Hyderabad Area · 340 LinkedIn connections</p>
+    <p>Agribusiness Management graduate from Professor Jayashankar Telangana State Agricultural University (PJTSAU), with a strong academic and field foundation in agriculture, markets and food businesses. I completed my MBA in Agribusiness Management in 2026 (CGPA 8.07), following a B.Sc. (Hons) in Agriculture (CGPA 8.24) and a Diploma in Agriculture.</p>
+    <p style="margin-top:12px">My professional exposure spans business development, operations and market research within the millet value chain. As a Business Development Intern at NutriHub, ICAR–Indian Institute of Millets Research, Hyderabad (March–June 2026), I supported market research, stakeholder engagement and enterprise development initiatives for millet-based ventures. Concurrently, as Executive – Operation &amp; Production Intern at Tashvika India Food Pvt. Ltd. (May–August 2026), I contributed to production planning, procurement, vendor coordination, packaging and food-processing operations.</p>
+    <p style="margin-top:12px">As lead and corresponding author, I published a peer-reviewed study on consumer preferences for millet-based functional foods in Hyderabad in the International Journal of Agriculture Extension and Social Development (September 2026), based on primary research with 20 businesses and 100 consumers. My experience also includes agricultural extension work under RAWEP in Khammam district, soil health assessment, and digital marketing for a food brand.</p>
+    <p style="margin-top:12px">I am seeking full-time, desk-based opportunities in market research, business operations and business development support with agri-input, agri-tech and food-processing organisations. My preference is for office-based roles in Hyderabad/Telangana that draw on research, analysis, coordination and digital work.</p>
+    <div class="tags"><span>Market Research</span><span>Business Development</span><span>Operations and Procurement</span><span>Vendor Coordination</span><span>Stakeholder Engagement</span><span>Data Analysis (Excel, Power BI)</span><span>Digital Marketing</span></div>
   </section>
 
-  <section id="experience">
-    <h2>Career Journey</h2>
+  <section id="skills" class="reveal">
+    <h2>Skills</h2>
+    <p class="sec-sub">As listed on my LinkedIn profile. Bar levels are a visual self-assessment — tell me if you want any adjusted.</p>
+    <div class="skill-grid">
+      <div class="skill-cat">
+        <h3>Research &amp; Business</h3>
+        <div class="bar"><label>Market Research <span>90%</span></label><div class="track"><div class="fill" data-w="90"></div></div></div>
+        <div class="bar"><label>Business Development <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Value Chain Management <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Stakeholder Engagement <span>90%</span></label><div class="track"><div class="fill" data-w="90"></div></div></div>
+        <div class="bar"><label>Stakeholder Relations <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+      </div>
+      <div class="skill-cat">
+        <h3>Operations &amp; Management</h3>
+        <div class="bar"><label>Operations Management <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Procurement <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Vendor Coordination <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Management <span>80%</span></label><div class="track"><div class="fill" data-w="80"></div></div></div>
+        <div class="bar"><label>Data Entry <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+      </div>
+      <div class="skill-cat">
+        <h3>Digital &amp; Tools</h3>
+        <div class="bar"><label>Digital Marketing <span>80%</span></label><div class="track"><div class="fill" data-w="80"></div></div></div>
+        <div class="bar"><label>Content Strategy <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Microsoft Excel <span>90%</span></label><div class="track"><div class="fill" data-w="90"></div></div></div>
+        <div class="bar"><label>Microsoft Office / Word / PowerPoint <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+      </div>
+      <div class="skill-cat">
+        <h3>Communication &amp; Field</h3>
+        <div class="bar"><label>Communication <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Creative Problem Solving <span>85%</span></label><div class="track"><div class="fill" data-w="85"></div></div></div>
+        <div class="bar"><label>Agricultural Extension <span>90%</span></label><div class="track"><div class="fill" data-w="90"></div></div></div>
+      </div>
+    </div>
+    <p style="margin-top:20px;color:var(--muted)">Languages: English — Professional working proficiency · Telugu — Native / bilingual · Hindi — Limited working proficiency</p>
+  </section>
+
+  <section id="experience" class="reveal">
+    <h2>Experience</h2>
     <div class="timeline">
-      <div class="item"><h3>Business Development Intern — NutriHub, ICAR-IIMR, Hyderabad</h3><p class="meta">Mar 2026 – Jun 2026 · On-site</p><p>Business Wing of NutriHub, IIMR's agri-business incubation centre. Market research, business development activities and stakeholder coordination to promote millet-based enterprises and value chain development.</p></div>
-      <div class="item"><h3>Executive – Operation &amp; Production Intern — Tashvika India Food Pvt. Ltd.</h3><p class="meta">May 2026 – Aug 2026 · At ICAR-IIMR / NutriHub, Hyderabad</p><p>Production operations, purchasing and vendor coordination, food processing and millet product handling, packaging, and the procurement-to-production workflow.</p></div>
-      <div class="item"><h3>Digital Marketing Intern — Butter Tree Foods Pvt. Ltd.</h3><p class="meta">Oct 2025 – Nov 2025 · Remote</p><p>Designed and executed social media campaigns using Canva, improving page engagement and organic reach; created promotional video content and graphic assets; managed post scheduling and community interaction.</p></div>
-      <div class="item"><h3>Agriculture Extension Intern (RAWEP) — Agricultural College, Aswaraopet, PJTSAU</h3><p class="meta">Jan 2024 – May 2024 · Khammam</p><p>Method demonstrations for farmers on modern cultivation and pest management for cotton and chilli; soil and irrigation water analyses (NPK, pH, EC, organic carbon) for Soil Health Cards and fertiliser recommendations; firsthand study of farmer socio-economic conditions and cropping patterns.</p></div>
+      <div class="item">
+        <h3>Executive – Operation &amp; Production Intern — Tashvika India Food Pvt Ltd</h3>
+        <p class="meta">May 2026 – Aug 2026 · 4 mos · Hyderabad, Telangana, India · On-site</p>
+        <p>Contributed to production planning and day-to-day operations for millet-based food products at a NutriHub-incubated enterprise. Coordinated procurement and vendor follow-ups to ensure timely availability of raw and packaging materials. Supported food-processing and packaging operations, and maintained production and operational records.</p>
+        <div class="tags"><span>Operations Management</span><span>Procurement</span><span>Vendor Coordination</span></div>
+      </div>
+      <div class="item">
+        <h3>Business Development Intern — NutriHub, ICAR Indian Institute of Millets Research (IIMR)</h3>
+        <p class="meta">Mar 2026 – Jun 2026 · 4 mos · Hyderabad, Telangana · On-site</p>
+        <p>Supported market research and business development activities in the Business Wing of NutriHub, ICAR-IIMR's agri-business incubation centre. Engaged with stakeholders and millet-based enterprises on value-chain and enterprise development initiatives.</p>
+        <div class="tags"><span>Market Research</span><span>Business Development</span><span>Stakeholder Engagement</span></div>
+      </div>
+      <div class="item">
+        <h3>Digital Marketing Intern — Butter Tree Foods Pvt. Ltd</h3>
+        <p class="meta">Oct 2025 – Nov 2025 · 2 mos · Remote</p>
+        <p>Designed and executed social media campaigns using Canva, improving page engagement. Created promotional videos and graphics, managed content scheduling and community interaction.</p>
+        <div class="tags"><span>Digital Marketing</span><span>Content Strategy</span></div>
+      </div>
+      <div class="item">
+        <h3>Agriculture Extension Intern (RAWEP) — Agricultural College, Aswaraopet – PJTSAU</h3>
+        <p class="meta">Jan 2024 – May 2024 · 5 mos · Khammam, Telangana, India · On-site</p>
+        <p>Conducted method demonstrations on modern cultivation practices and pest management for farmers. Diagnosed field-level problems in cotton and chilli crops and provided extension advisory services. Studied farmer socio-economic conditions and cropping patterns during village immersion.</p>
+        <div class="tags"><span>Agricultural Extension</span></div>
+      </div>
     </div>
   </section>
 
-  <section id="research">
-    <h2>Published Research</h2>
+  <section id="education" class="reveal">
+    <h2>Education</h2>
+    <div class="timeline">
+      <div class="item">
+        <h3>MBA, Agribusiness Management — Professor Jayashankar Telangana State Agricultural University</h3>
+        <p class="meta">2024 – 2026 · Grade: 8.07</p>
+      </div>
+      <div class="item">
+        <h3>B.Sc. (Hons) Agriculture — Professor Jayashankar Telangana State Agricultural University</h3>
+        <p class="meta">Jan 2020 – May 2024 · Grade: 8.24</p>
+        <p>Comprehensive multidisciplinary programme in agricultural sciences. Completed RAWEP (field immersion), AELP (Soil Health Lab), and hands-on training in soil analysis, water quality testing, and farmer advisory services.</p>
+      </div>
+      <div class="item">
+        <h3>Diploma in Agriculture — Professor Jayashankar Telangana State Agricultural University</h3>
+        <p class="meta">Oct 2016 – May 2018 · Grade: 8.66</p>
+      </div>
+      <div class="item">
+        <h3>High School Diploma — Ichdien Convent High School</h3>
+        <p class="meta">Grade: 9.7</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="research" class="reveal">
+    <h2>Publications</h2>
     <div class="card">
       <h3>Market analysis and consumer preferences for major millet based functional foods in Hyderabad, Telangana</h3>
-      <p class="meta">Lead &amp; corresponding author · International Journal of Agriculture Extension and Social Development, Vol. 9, Issue 9, September 2026, pp. 439–448 · NAAS Rating 2026: 5.04</p>
-      <p>Primary research with 20 millet functional-food businesses and 100 consumers across 5 GHMC zones (Apr–Jul 2026), using percentage analysis, Garrett's ranking, Likert scaling and chi-square tests.</p>
-      <p>DOI: <a href="https://doi.org/10.33545/26180723.2026.v9.i9f.4223">10.33545/26180723.2026.v9.i9f.4223</a></p>
+      <p class="meta">International Journal of Agriculture Extension and Social Development · 1 Sep 2026 · Vol. 9, Issue 9, pp. 439–448 · NAAS Rating 2026: 5.04</p>
+      <p>Peer-reviewed study surveying 20 millet-based functional food businesses and 100 consumers across Hyderabad's five GHMC zones (April–July 2026), analysing market segmentation, positioning, pricing and consumer preference using Garrett's ranking, Likert scaling and chi-square tests.</p>
+      <p>DOI: <a href="https://doi.org/10.33545/26180723.2026.v9.i9f.4223">10.33545/26180723.2026.v9.i9f.4223</a> · Journal: <a href="https://www.extensionjournal.com/archives/2026.v9.i9.F.4223">extensionjournal.com</a></p>
     </div>
   </section>
 
-  <section id="projects">
+  <section id="projects" class="reveal">
     <h2>Projects</h2>
     <div class="card">
-      <h3>🌾 AGRIMETS — Founder</h3>
-      <p class="meta">EdTech · Community Platform</p>
-      <p>A self-initiated digital learning platform for agriculture competitive examination aspirants across Telangana, delivering syllabus-aligned mock tests, curated study notes and organised content for state-level agriculture examinations. Conceived, built and maintained independently — now live at <a href="https://agrimets.app">agrimets.app</a>.</p>
-      <div class="tags"><span>Telegram</span><span>Mock Tests</span><span>Content Curation</span><span>Telangana Agri Exams</span><span>Community Building</span></div>
+      <h3>🌾 AGRIMETS</h3>
+      <p class="meta">Self-initiated · Telegram-based learning platform</p>
+      <p>Built a self-initiated Telegram-based learning platform for Agriculture competitive exam aspirants using no-code bot tools. Features mock tests, daily current affairs flashcards, and curated study notes. Reflects initiative in digital problem-solving and community building for agri students across India.</p>
+      <div class="tags"><span>Mock Tests</span><span>Daily Flashcards</span><span>Study Notes</span><span>No-Code Bots</span><span>Community Building</span></div>
     </div>
   </section>
 
-  <section id="education">
-    <h2>Education</h2>
-    <div class="card"><h3>MBA — Agribusiness Management, PJTSAU</h3><p class="meta">2024 – 2026 · CGPA 8.07</p></div>
-    <div class="card"><h3>B.Sc. (Hons.) Agriculture, PJTAU</h3><p class="meta">2020 – 2024 · CGPA 8.24</p></div>
-    <div class="card"><h3>Diploma in Agriculture, Palem</h3><p class="meta">2016 – 2018 · 8.66 / 10</p></div>
-    <div class="card"><h3>Secondary School Certificate (SSC)</h3><p class="meta">2016 · CGPA 9.7</p></div>
-  </section>
-
-  <section id="contact">
-    <h2>Let's Connect 🌾</h2>
-    <p>Open to full-time, desk-based roles in market research, business operations and business development support with agri-input, agri-tech and food-processing organisations — preferably Hyderabad / Telangana.</p>
-    <p style="margin-top:16px">Email: <a href="mailto:saiteja@agrimets.app">saiteja@agrimets.app</a><br>
+  <section id="contact" class="reveal">
+    <h2>Let's Connect</h2>
+    <p class="sec-sub">Open to full-time, desk-based roles in market research, business operations and business development support — preferably office-based in Hyderabad / Telangana.</p>
+    <p>Email: <a href="mailto:saiteja@agrimets.app">saiteja@agrimets.app</a><br>
     LinkedIn: <a href="https://www.linkedin.com/in/saitejabaddula">linkedin.com/in/saitejabaddula</a><br>
     GitHub: <a href="https://github.com/saitejayadav2810-cyber">github.com/saitejayadav2810-cyber</a><br>
-    Location: Hyderabad, Telangana, India</p>
+    Location: Greater Hyderabad Area, Telangana, India</p>
   </section>
 </main>
-<footer><div class="wrap">© B Sai Teja · 3D scene rendered live with Three.js — no trackers, no frameworks beyond the 3D layer.</div></footer>
-</div>
+<footer><div class="wrap">© B Sai Teja · Content matches my LinkedIn profile · 3D particle hero rendered live with Three.js</div></footer>
 <script type="module">
 import * as THREE from 'three';
-const canvas = document.getElementById('scene');
-const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
-camera.position.set(0, 0, 14);
-// Golden wireframe icosahedron — the hero 3D element
-const hero = new THREE.Mesh(
-  new THREE.IcosahedronGeometry(3.2, 1),
-  new THREE.MeshBasicMaterial({color:0x7ed957, wireframe:true, transparent:true, opacity:0.55})
-);
-hero.position.set(4.5, 1.2, 0);
-scene.add(hero);
-// Small gold satellite shape
-const sat = new THREE.Mesh(
-  new THREE.TorusKnotGeometry(0.9, 0.28, 90, 12),
-  new THREE.MeshBasicMaterial({color:0xe8c66a, wireframe:true, transparent:true, opacity:0.5})
-);
-sat.position.set(-5, -2.5, -2);
-scene.add(sat);
-// Floating millet-grain particles
-const count = 260, pos = new Float32Array(count * 3);
-for (let i = 0; i < count; i++) {
-  pos[i*3] = (Math.random() - 0.5) * 30;
-  pos[i*3+1] = (Math.random() - 0.5) * 18;
-  pos[i*3+2] = (Math.random() - 0.5) * 10;
-}
-const grains = new THREE.Points(
-  new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(pos, 3)),
-  new THREE.PointsMaterial({color:0x7ed957, size:0.09, transparent:true, opacity:0.8})
-);
-scene.add(grains);
-let mx = 0, my = 0;
-addEventListener('pointermove', e => {
-  mx = (e.clientX / innerWidth - 0.5) * 2;
-  my = (e.clientY / innerHeight - 0.5) * 2;
-});
-function resize(){
-  const w = innerWidth, h = innerHeight;
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-  hero.position.x = w < 700 ? 0 : 4.5;
-  hero.position.y = w < 700 ? 3.4 : 1.2;
-}
-addEventListener('resize', resize); resize();
-const clock = new THREE.Clock();
-(function animate(){
-  requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
-  hero.rotation.x = t * 0.12; hero.rotation.y = t * 0.18;
-  sat.rotation.x = t * 0.2; sat.rotation.y = t * 0.15;
-  grains.rotation.y = t * 0.02 + mx * 0.08;
-  grains.rotation.x = my * 0.05;
-  camera.position.x += (mx * 0.6 - camera.position.x) * 0.03;
-  camera.position.y += (-my * 0.4 - camera.position.y) * 0.03;
-  camera.lookAt(0, 0, 0);
-  renderer.render(scene, camera);
-})();
+try {
+  const canvas = document.getElementById('hero3d');
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+  camera.position.set(0, 0, 12);
+  const count = 220, pos = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    pos[i*3] = (Math.random() - 0.5) * 26;
+    pos[i*3+1] = (Math.random() - 0.5) * 14;
+    pos[i*3+2] = (Math.random() - 0.5) * 8;
+  }
+  const pts = new THREE.Points(
+    new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(pos, 3)),
+    new THREE.PointsMaterial({color:0xa78bfa, size:0.08, transparent:true, opacity:0.75})
+  );
+  scene.add(pts);
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(2.2, 0.05, 12, 80),
+    new THREE.MeshBasicMaterial({color:0xd946ef, transparent:true, opacity:0.5})
+  );
+  ring.position.set(5, 1, -2); ring.rotation.x = 0.9;
+  scene.add(ring);
+  function resize(){
+    const h = canvas.parentElement;
+    renderer.setSize(h.clientWidth, h.clientHeight, false);
+    camera.aspect = h.clientWidth / h.clientHeight;
+    camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+  const clock = new THREE.Clock();
+  (function animate(){
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    pts.rotation.y = t * 0.03;
+    ring.rotation.z = t * 0.15;
+    renderer.render(scene, camera);
+  })();
+} catch(e) { /* hero still renders without WebGL */ }
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      en.target.classList.add('visible');
+      en.target.querySelectorAll('.fill').forEach(f => f.style.width = f.dataset.w + '%');
+    }
+  });
+}, {threshold: 0.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+document.querySelectorAll('.fill').forEach(f => { if (f.closest('.reveal') === null) f.style.width = f.dataset.w + '%'; });
 </script>
 </body>
 </html>
