@@ -38,7 +38,7 @@
   h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
   .tagline{font-size:clamp(1.05rem,2.6vw,1.35rem);color:var(--muted);max-width:640px}
   .cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:6px}
-  .btn{display:inline-block;background:var(--grad);color:#fff!important;text-decoration:none;padding:12px 24px;border-radius:10px;font-weight:700;min-height:44px;line-height:1.4}
+  .btn{display:inline-block;background:var(--grad);color:#fff!important;text-decoration:none;padding:12px 24px;border-radius:10px;font-weight:700;min-height:44px;line-height:1.4;word-break:break-all}
   .btn.ghost{background:transparent;color:var(--text)!important;border:1px solid var(--line)}
   .btn:hover{filter:brightness(1.12)}
   .scroll-cue{margin-top:16px;color:var(--muted);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase}
@@ -46,29 +46,33 @@
   @keyframes cue{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(8px);opacity:.4}}
   /* 3D photo card */
   .stage{perspective:1000px}
-  .tilt{position:relative;width:clamp(250px,44vw,310px);transform-style:preserve-3d;transition:transform .18s ease-out;will-change:transform}
-  .tilt img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:24px;border:1px solid rgba(216,180,254,.4);box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 0 5px rgba(139,92,246,.25),0 0 44px rgba(217,70,239,.45)}
+  .tilt{position:relative;width:clamp(250px,44vw,310px);transform-style:preserve-3d;will-change:transform}
+  .tilt img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:24px;border:1px solid rgba(216,180,254,.4);box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 0 5px rgba(139,92,246,.25),0 0 44px rgba(217,70,239,.45);backface-visibility:hidden}
   .tilt::after{content:"";position:absolute;inset:0;border-radius:24px;background:linear-gradient(115deg,rgba(255,255,255,.22) 0%,transparent 42%);pointer-events:none;transform:translateZ(30px)}
   .chip{position:absolute;padding:9px 15px;border-radius:20px;font-size:.85rem;font-weight:700;background:rgba(23,16,46,.75);backdrop-filter:blur(8px);border:1px solid rgba(216,180,254,.35);box-shadow:0 10px 24px rgba(0,0,0,.4);transform:translateZ(60px);white-space:nowrap;animation:floaty 4.5s ease-in-out infinite}
+  a.chip{color:var(--text);text-decoration:none;cursor:pointer}
+  a.chip:hover{border-color:#e9d5ff;filter:brightness(1.2)}
+  a.chip:focus-visible{outline:2px solid #d8b4fe;outline-offset:3px}
   .chip.c1{top:14px;left:-18px}
   .chip.c2{bottom:52px;right:-14px;animation-delay:1.2s}
   .chip.c3{bottom:-14px;left:22px;animation-delay:2.1s}
-  @keyframes floaty{0%,100%{margin-top:0}50%{margin-top:-10px}}
+  @keyframes floaty{0%,100%{transform:translateZ(60px) translateY(0)}50%{transform:translateZ(60px) translateY(-10px)}}
   /* ---------- sections ---------- */
   section{padding:clamp(44px,7vw,72px) 0}
   h2{font-size:clamp(1.5rem,4vw,2rem);margin-bottom:6px}
   h2 span{color:#d8b4fe}
   .sec-sub{color:var(--muted);margin-bottom:26px;max-width:720px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,3.5vw,26px);margin-top:16px;transition:transform .25s ease,border-color .25s ease}
-  .card:hover{transform:translateY(-3px);border-color:#7c5cf0}
-  .card.tilt-card:hover{transform:none}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,3.5vw,26px);margin-top:16px;transition:border-color .25s ease}
+  .card:hover{border-color:#7c5cf0}
+  .card.tilt-card{will-change:transform;backface-visibility:hidden}
   .card h3{font-size:1.12rem}
   .meta{color:var(--muted);font-size:.94rem;margin-top:4px}
   .card p{margin-top:10px;color:#ddd6f2}
   /* ---------- stats ---------- */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:8px}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 16px;text-align:center}
   .stat b{display:block;font-size:clamp(1.4rem,4vw,2rem);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat b.small{font-size:clamp(1.02rem,2.6vw,1.3rem);line-height:1.3}
   .stat span{color:var(--muted);font-size:.88rem}
   /* ---------- about with photo ---------- */
   .about-grid{display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start}
@@ -93,6 +97,7 @@
   @media(max-width:640px){
     .skill-grid{grid-template-columns:1fr}
     .stats{grid-template-columns:1fr 1fr}
+    .stats .stat:last-child{grid-column:1/-1}
     .about-grid{grid-template-columns:1fr}
     .about-photo{max-width:280px;margin:0 auto;display:block}
     .btn{width:100%;text-align:center}
@@ -127,15 +132,15 @@
     <div class="stage" id="stage">
       <div class="tilt" id="tilt">
         <img id="heroPhoto" src="profile.jpg" alt="B Sai Teja">
-        <span class="chip c1">📊 Market Research</span>
-        <span class="chip c2">🎓 MBA · PJTAU</span>
-        <span class="chip c3">📄 Published 2026</span>
+        <a class="chip c1" href="#skills">📊 Market Research</a>
+        <a class="chip c2" href="#education">🎓 MBA · PJTAU</a>
+        <a class="chip c3" href="#publications">📄 Published 2026</a>
       </div>
     </div>
     <h1>B Sai Teja<br><span>Agribusiness Management Graduate</span></h1>
     <p class="tagline">Market Research · Business Operations · Business Development<br>Millet Value Chain – NutriHub, ICAR-IIMR · Seeking desk-based roles in agri-input, agri-tech &amp; food processing</p>
     <div class="cta">
-      <a class="btn" href="mailto:saiteja@agrimets.app">saiteja@agrimets.app</a>
+      <a class="btn" href="mailto:Saitejayadav82323@gmail.com">Saitejayadav82323@gmail.com</a>
       <a class="btn ghost" href="https://www.linkedin.com/in/saitejabaddula">LinkedIn</a>
       <a class="btn ghost" href="https://github.com/saitejayadav2810-cyber">GitHub</a>
     </div>
@@ -147,8 +152,9 @@
   <div class="stats">
     <div class="stat"><b>8.07</b><span>MBA CGPA (PJTAU, 2026)</span></div>
     <div class="stat"><b>1</b><span>Peer-reviewed publication (lead author)</span></div>
-    <div class="stat"><b>5.04</b><span>NAAS rating of the journal (2026)</span></div>
     <div class="stat"><b>4</b><span>Internships</span></div>
+    <div class="stat"><b class="small">Digital Marketing</b><span>Hands-on: campaigns, videos &amp; graphics</span></div>
+    <div class="stat"><b class="small">Content Creation</b><span>Videos, graphics, notes &amp; flashcards</span></div>
   </div>
 
   <section id="about" class="reveal">
@@ -274,7 +280,7 @@
   <section id="contact" class="reveal">
     <h2>Let's Connect</h2>
     <p class="sec-sub">Open to full-time, desk-based roles in market research, business operations and business development support — preferably office-based in Hyderabad / Telangana.</p>
-    <p>Email: <a href="mailto:saiteja@agrimets.app">saiteja@agrimets.app</a><br>
+    <p>Email: <a href="mailto:Saitejayadav82323@gmail.com">Saitejayadav82323@gmail.com</a><br>
     LinkedIn: <a href="https://www.linkedin.com/in/saitejabaddula">linkedin.com/in/saitejabaddula</a><br>
     GitHub: <a href="https://github.com/saitejayadav2810-cyber">github.com/saitejayadav2810-cyber</a><br>
     Location: Greater Hyderabad Area, Telangana, India</p>
@@ -284,13 +290,34 @@
 <script type="module">
 import * as THREE from 'three';
 let mouseX = 0, mouseY = 0;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 addEventListener('mousemove', e => {
   mouseX = (e.clientX / innerWidth - 0.5) * 2;
   mouseY = (e.clientY / innerHeight - 0.5) * 2;
 });
+/* Smooth tilt helper: eases rotation toward the pointer instead of jumping */
+function smoothTilt(el, maxDeg, lift, hoverEl) {
+  if (!el || reduceMotion || !matchMedia('(pointer:fine)').matches) return;
+  const hover = hoverEl || el;
+  let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+  const apply = () => {
+    cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
+    el.style.transform = `perspective(900px) rotateY(${cx}deg) rotateX(${cy}deg)${lift ? ' translateY(-2px)' : ''}`;
+    if (Math.abs(tx - cx) > 0.01 || Math.abs(ty - cy) > 0.01) raf = requestAnimationFrame(apply);
+    else raf = null;
+  };
+  const kick = () => { if (!raf) raf = requestAnimationFrame(apply); };
+  hover.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    tx = ((e.clientX - r.left) / r.width - 0.5) * 2 * maxDeg;
+    ty = -((e.clientY - r.top) / r.height - 0.5) * 2 * maxDeg;
+    kick();
+  });
+  hover.addEventListener('mouseleave', () => { tx = 0; ty = 0; kick(); });
+}
 try {
   const canvas = document.getElementById('hero3d');
-  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true, powerPreference:'high-performance'});
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
@@ -323,9 +350,12 @@ try {
     camera.updateProjectionMatrix();
   }
   addEventListener('resize', resize); resize();
+  let heroVisible = true;
+  new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }).observe(document.querySelector('header'));
   const clock = new THREE.Clock();
   (function animate(){
     requestAnimationFrame(animate);
+    if (!heroVisible || document.hidden || reduceMotion) return;
     const t = clock.getElapsedTime();
     pts.rotation.y = t * 0.03;
     knot.rotation.x = t * 0.22; knot.rotation.y = t * 0.3;
@@ -338,28 +368,8 @@ try {
     renderer.render(scene, camera);
   })();
 } catch(e) { /* hero still renders without WebGL */ }
-/* 3D tilt on the hero photo card (mouse) */
-const stage = document.getElementById('stage'), tilt = document.getElementById('tilt');
-if (stage && tilt && matchMedia('(pointer:fine)').matches) {
-  stage.addEventListener('mousemove', e => {
-    const r = stage.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-    tilt.style.transform = `rotateY(${x * 16}deg) rotateX(${-y * 16}deg)`;
-  });
-  stage.addEventListener('mouseleave', () => { tilt.style.transform = 'rotateY(0deg) rotateX(0deg)'; });
-}
-/* Gentle 3D tilt on cards (mouse) */
-if (matchMedia('(pointer:fine)').matches) {
-  document.querySelectorAll('.tilt-card').forEach(card => {
-    card.style.transformStyle = 'preserve-3d';
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `perspective(800px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-2px)`;
-    });
-    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-  });
-}
+smoothTilt(document.getElementById('tilt'), 16, false, document.getElementById('stage'));
+document.querySelectorAll('.tilt-card').forEach(card => smoothTilt(card, 7, true));
 /* Cinematic scroll: hero scrubs away, progress bar fills */
 const heroInner = document.getElementById('heroInner'), progress = document.getElementById('progress');
 let ticking = false;
